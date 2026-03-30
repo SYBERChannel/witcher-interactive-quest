@@ -4,6 +4,9 @@
   align-items: center;
   justify-content: center;
   background: var(--surface-container-lowest);
+  background-image: linear-gradient(rgba(10, 8, 8, 0.8), rgba(10, 8, 8, 0.9)), url('/backgrounds/kaer_morhen.png');
+  background-size: cover;
+  background-position: center;
   position: relative;
   overflow: hidden;
 }

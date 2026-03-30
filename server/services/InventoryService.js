@@ -62,7 +62,13 @@ const getItemDefinition = (itemId) => {
         leather_armor: { item_type: "armor", name: "Leather Armor", stats: { defense: 5, resist: "physical" } },
         frost_armor: { item_type: "armor", name: "Frost Armor", stats: { defense: 15, resist: "frost" } },
         swallow_potion: { item_type: "potion", name: "Swallow", stats: { heal: 30 } },
+        thunderbolt_potion: { item_type: "potion", name: "Thunderbolt", stats: { heal: 0, damage_boost: 1.5 } },
         key_to_tower: { item_type: "key", name: "Key to the Tower", stats: { unlocks: "tower_door" } },
+        drowner_brain: { item_type: "potion", name: "Drowner Brain", stats: { heal: 10 } },
+        wraith_essence: { item_type: "potion", name: "Wraith Essence", stats: { damage_boost: 1.3 } },
+        gravelier_bone: { item_type: "misc", name: "Gravelier Bone", stats: {} },
+        griffin_feather: { item_type: "key", name: "Griffin Feather", stats: { unlocks: "council_archive" } },
+        eredin_sword: { item_type: "weapon", name: "Eredin's Blade", stats: { damage: 40, type: "frost" } },
     };
 
     return itemDefinitions[itemId] || null;

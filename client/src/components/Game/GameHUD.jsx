@@ -1,7 +1,7 @@
 import React from 'react';
 import useGameState from '../../hooks/useGameState';
 
-const GameHUD = () => {
+const GameHUD = ({ onToggleInventory }) => {
     const { gameState } = useGameState();
 
     if (!gameState) return null;
@@ -26,17 +26,26 @@ const GameHUD = () => {
                 </div>
             </div>
 
-            <div className="hud-hp">
-                <div className="hud-hp-label">
-                    <span>Vitality</span>
-                    <span>{gameState.hp} / {gameState.max_hp}</span>
+            <div className="hud-controls" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div className="hud-hp">
+                    <div className="hud-hp-label">
+                        <span>Vitality</span>
+                        <span>{gameState.hp} / {gameState.max_hp}</span>
+                    </div>
+                    <div className="hp-bar-wrapper">
+                        <div
+                            className={`hp-bar-fill hp-bar-fill--game${isLow ? ' hp-bar-fill--low' : ''}`}
+                            style={{ width: `${Math.max(0, hpPercent)}%` }}
+                        />
+                    </div>
                 </div>
-                <div className="hp-bar-wrapper">
-                    <div
-                        className={`hp-bar-fill hp-bar-fill--game${isLow ? ' hp-bar-fill--low' : ''}`}
-                        style={{ width: `${Math.max(0, hpPercent)}%` }}
-                    />
-                </div>
+                <button 
+                    className="btn-secondary" 
+                    onClick={onToggleInventory}
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.8rem', height: 'fit-content' }}
+                >
+                    <span style={{ marginRight: '0.5rem' }}>🎒</span> Inventory
+                </button>
             </div>
         </div>
     );

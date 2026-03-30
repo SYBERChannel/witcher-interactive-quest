@@ -69,26 +69,50 @@
 }
 
 .game-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 0;
+  display: flex;
   flex: 1;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .game-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: var(--space-5);
   background: var(--surface);
+  transition: opacity 0.3s;
 }
 
 .game-sidebar {
-  background: var(--surface-container-low);
+  position: absolute;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  bottom: 0;
+  background: var(--surface-container-high);
+  border-left: 1px solid var(--outline-variant);
   padding: var(--space-4);
-  min-height: 100%;
+  z-index: 100;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+}
+
+.game-sidebar.open {
+  right: 0;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease;
 }
 
 .scene-view {

@@ -3,15 +3,12 @@
   display: flex;
   flex-direction: column;
   background: var(--surface-container-lowest);
+  background-image: linear-gradient(rgba(10, 8, 8, 0.5), rgba(10, 8, 8, 0.7)), url('/backgrounds/battle_arena.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed;
   position: relative;
-}
-
-.battle-page::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 80%, rgba(146, 7, 3, 0.08) 0%, transparent 60%);
-  pointer-events: none;
+  overflow: hidden;
 }
 
 .battle-loading,
@@ -113,24 +110,15 @@
 
 .arena-visuals {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0 15%;
   height: 400px;
-  background: var(--surface);
+  background: transparent;
   position: relative;
   margin-bottom: var(--space-5);
   overflow: hidden;
-}
-
-.arena-visuals::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 25% 80%, rgba(146, 7, 3, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 80%, rgba(146, 7, 3, 0.08) 0%, transparent 50%);
-  pointer-events: none;
 }
 
 .sprite {
@@ -143,23 +131,27 @@
 }
 
 .sprite-box {
-  width: 90px;
-  height: 130px;
-  background: linear-gradient(180deg, var(--secondary-container), #5a0302);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--on-surface);
-  font-family: var(--font-label);
-  font-weight: 700;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
 }
 
 .sprite-box.enemy-box {
-  background: linear-gradient(180deg, var(--surface-container-highest), var(--surface-container-low));
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
   color: var(--secondary);
+}
+
+.sprite-svg {
+  width: 150px;
+  height: 150px;
+  animation: breathe 3s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
 }
 
 .round-log {

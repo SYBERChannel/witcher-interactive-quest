@@ -3,6 +3,9 @@
   display: flex;
   flex-direction: column;
   background: var(--surface-container-lowest);
+  background-image: linear-gradient(rgba(10, 8, 8, 0.7), rgba(10, 8, 8, 0.85)), url('/backgrounds/kaer_morhen.png');
+  background-size: cover;
+  background-position: center;
   position: relative;
   overflow: hidden;
 }

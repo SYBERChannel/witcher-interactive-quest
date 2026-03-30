@@ -50,7 +50,15 @@ const BattleArena = () => {
                     variants={geraltVariants}
                 >
                     <div className="sprite-box">
-                        <span className="sprite-label">Geralt</span>
+                        <svg className="sprite-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 10L60 40H90L65 60L75 90L50 70L25 90L35 60L10 40H40L50 10Z" fill="url(#geraltGrad)" />
+                            <defs>
+                                <linearGradient id="geraltGrad" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stopColor="#F1C97D" />
+                                    <stop offset="1" stopColor="#A87A29" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
                     </div>
                 </motion.div>
 
@@ -61,7 +69,17 @@ const BattleArena = () => {
                     variants={enemyVariants}
                 >
                     <div className="sprite-box enemy-box">
-                        <span className="sprite-label">{battleData.enemy.name}</span>
+                        <svg className="sprite-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 20 Q 50 10 80 40 T 60 90 Q 30 70 20 20 Z" fill="url(#enemyGrad)" />
+                            <circle cx="65" cy="40" r="5" fill="#111" />
+                            <path d="M40 80 L 30 95 M 50 85 L 45 100 M 60 80 L 65 95" stroke="url(#enemyGrad)" strokeWidth="3" />
+                            <defs>
+                                <linearGradient id="enemyGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stopColor="#920703" />
+                                    <stop offset="1" stopColor="#4A0201" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
                     </div>
                 </motion.div>
             </div>

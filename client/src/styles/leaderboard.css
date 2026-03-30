@@ -1,6 +1,9 @@
 .leaderboard-page {
   min-height: 100vh;
   background: var(--surface-container-lowest);
+  background-image: linear-gradient(rgba(10, 8, 8, 0.8), rgba(10, 8, 8, 0.95)), url('/backgrounds/tavern.png');
+  background-size: cover;
+  background-position: center;
   padding: var(--space-5);
   position: relative;
 }

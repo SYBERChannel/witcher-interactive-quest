@@ -4,6 +4,9 @@
   align-items: center;
   justify-content: center;
   background: var(--surface-container-lowest);
+  background-image: linear-gradient(rgba(10, 8, 8, 0.7), rgba(10, 8, 8, 0.9)), url('/backgrounds/novigrad.png');
+  background-size: cover;
+  background-position: center;
   position: relative;
   overflow: hidden;
 }

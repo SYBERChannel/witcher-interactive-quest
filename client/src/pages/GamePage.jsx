@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useGameState from '../hooks/useGameState';
 import GameHUD from '../components/Game/GameHUD';
 import SceneView from '../components/Game/SceneView';
@@ -8,6 +8,7 @@ import RandomEventModal from '../components/Game/RandomEventModal';
 
 const GamePage = () => {
     const { fetchState, gameState, currentScene, loading, error } = useGameState();
+    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
     useEffect(() => {
         fetchState();
@@ -35,7 +36,7 @@ const GamePage = () => {
 
     return (
         <div className="game-page">
-            <GameHUD />
+            <GameHUD onToggleInventory={() => setIsInventoryOpen(prev => !prev)} />
 
             <div className="game-layout">
                 <main className="game-main">
@@ -43,9 +44,14 @@ const GamePage = () => {
                     <ChoiceList />
                 </main>
 
-                <aside className="game-sidebar">
+                <aside className={`game-sidebar ${isInventoryOpen ? 'open' : ''}`}>
                     <Inventory />
                 </aside>
+                
+                {/* Overlay to click-to-close */}
+                {isInventoryOpen && (
+                    <div className="sidebar-overlay" onClick={() => setIsInventoryOpen(false)} />
+                )}
             </div>
 
             <RandomEventModal />
