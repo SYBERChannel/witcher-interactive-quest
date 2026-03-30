@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import * as battleApi from '../api/battle.api';
 
-const useBattleStore = create((set) => ({
+const useBattleStore = create((set, get) => ({
     battleData: null,
     loading: false,
     error: null,
@@ -10,30 +10,82 @@ const useBattleStore = create((set) => ({
     initBattle: async (battleId) => {
         set({ loading: true, error: null, battleData: null, roundResult: null });
         try {
-            const data = await battleApi.getBattle(battleId);
-            set({ battleData: data, loading: false });
+            const response = await battleApi.getBattle(battleId);
+            const battle = response.data.battle;
+
+            set({
+                battleData: {
+                    id: battle.battleId,
+                    player: {
+                        hp: battle.playerHp,
+                        maxHp: battle.playerMaxHp,
+                    },
+                    enemy: {
+                        name: battle.enemyName,
+                        hp: battle.enemyHp,
+                        maxHp: battle.enemyHp,
+                        attack: battle.enemyAttack,
+                        defense: battle.enemyDefense,
+                    },
+                    outcome: null,
+                    loot: [],
+                    xpGained: 0,
+                },
+                loading: false,
+            });
         } catch (err) {
             set({ error: err.message || 'Failed to load battle', loading: false });
         }
     },
 
-    performAction: async (battleId, action, detail) => {
+    performAction: async (battleId, action) => {
         set({ loading: true, error: null });
         try {
-            const result = await battleApi.sendAction(battleId, action, detail);
+            const response = await battleApi.sendAction(battleId, action);
+            const data = response.data;
+            const prev = get().battleData;
 
-            // Assuming result structure:
-            // { battleState, roundResult, outcome }
+            const logParts = [];
+            if (data.round) {
+                const pAct = data.round.playerAction;
+                const eAct = data.round.enemyAction;
+                const pDmg = Math.abs(data.round.enemyHpChange || 0);
+                const eDmg = Math.abs(data.round.playerHpChange || 0);
+                if (pDmg > 0) logParts.push(`Geralt deals ${pDmg} damage with ${pAct}.`);
+                if (eDmg > 0) logParts.push(`${prev.enemy.name} deals ${eDmg} damage with ${eAct}.`);
+                if (pDmg === 0 && eDmg === 0) logParts.push('Both combatants brace. No damage dealt.');
+            }
 
             set({
-                battleData: result.battleState,
-                roundResult: result.roundResult,
-                loading: false
+                battleData: {
+                    ...prev,
+                    player: {
+                        ...prev.player,
+                        hp: data.playerHp,
+                    },
+                    enemy: {
+                        ...prev.enemy,
+                        hp: data.enemyHp,
+                    },
+                    outcome: data.battleResult || null,
+                    loot: data.loot || [],
+                    xpGained: data.xpGained || 0,
+                },
+                roundResult: {
+                    playerAction: data.round?.playerAction,
+                    enemyAction: data.round?.enemyAction,
+                    playerDamage: Math.abs(data.round?.playerHpChange || 0),
+                    enemyDamage: Math.abs(data.round?.enemyHpChange || 0),
+                    animationKey: data.round?.animationKey,
+                    logMessage: logParts.join(' '),
+                },
+                loading: false,
             });
 
-            return result.outcome; // 'won', 'lost', or null/undefined if ongoing
+            return data.battleResult || null;
         } catch (err) {
             set({ error: err.message || 'Action failed', loading: false });
+            return null;
         }
     },
 

@@ -1,0 +1,105 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-container-lowest);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(241, 201, 125, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(146, 7, 3, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-6);
+  background: var(--surface-container);
+  position: relative;
+  z-index: 1;
+  animation: fadeSlideUp 0.6s ease;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.auth-emblem {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--outline);
+  margin-bottom: var(--space-3);
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+}
+
+.auth-subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--on-surface-variant);
+  font-style: italic;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-submit {
+  margin-top: var(--space-3);
+  width: 100%;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  position: relative;
+}
+
+.auth-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--outline-variant), transparent);
+}
+
+.auth-footer-text {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: var(--outline);
+}
+
+.auth-footer-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.auth-footer-link:hover {
+  color: var(--primary-fixed);
+  text-decoration: none;
+}

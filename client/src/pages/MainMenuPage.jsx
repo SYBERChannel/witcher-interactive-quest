@@ -45,39 +45,61 @@ const MainMenuPage = () => {
     };
 
     return (
-        <div className="main-menu">
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1>Witcher: Path of Geralt</h1>
-                <div>
-                    <span style={{ marginRight: '1rem' }}>Welcome, {user?.username || user?.email}</span>
-                    <button onClick={logout}>Logout</button>
-                </div>
-            </header>
-
-            <div className="menu-options" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
-                {error && <div style={{ color: '#cd5c5c', textAlign: 'center', marginBottom: '1rem' }}>{error}</div>}
-
-                <button
-                    className="menu-btn"
-                    onClick={handleNewGame}
-                    disabled={loading}
-                >
-                    {loading ? 'Loading...' : 'New Game'}
-                </button>
-
-                <button
-                    className="menu-btn"
-                    onClick={handleContinue}
-                    disabled={loading}
-                >
-                    {loading ? 'Resuming...' : 'Continue'}
-                </button>
-
-                <Link to="/leaderboard">
-                    <button className="menu-btn" style={{ width: '100%' }} disabled={loading}>
-                        Leaderboard
+        <div className="main-menu-page">
+            <div className="menu-top-bar">
+                <div className="menu-user-info">
+                    <span className="menu-username">
+                        {user?.username || user?.email}
+                    </span>
+                    <button
+                        className="btn-text menu-logout-btn"
+                        onClick={logout}
+                    >
+                        Sign Out
                     </button>
-                </Link>
+                </div>
+            </div>
+
+            <div className="menu-center">
+                <div className="menu-brand">
+                    <div className="menu-brand-label">A Dark Fantasy Quest</div>
+                    <h1 className="menu-brand-title">Witcher</h1>
+                    <p className="menu-brand-subtitle">Path of Geralt</p>
+                </div>
+
+                {error && (
+                    <div className="stitch-error menu-error">{error}</div>
+                )}
+
+                <div className="menu-actions">
+                    <button
+                        className="btn-primary"
+                        onClick={handleNewGame}
+                        disabled={loading}
+                    >
+                        {loading ? 'Loading...' : 'New Game'}
+                    </button>
+
+                    <button
+                        className="btn-secondary"
+                        onClick={handleContinue}
+                        disabled={loading}
+                    >
+                        {loading ? 'Resuming...' : 'Continue'}
+                    </button>
+
+                    <hr className="stitch-divider menu-separator" />
+
+                    <Link to="/leaderboard">
+                        <button
+                            className="btn-secondary"
+                            style={{ width: '100%' }}
+                            disabled={loading}
+                        >
+                            Leaderboard
+                        </button>
+                    </Link>
+                </div>
             </div>
         </div>
     );

@@ -16,7 +16,7 @@ export const getScene = async () => {
 };
 
 export const makeChoice = async (choiceId) => {
-    const response = await api.post('/game/choice', { choiceId });
+    const response = await api.post('/game/choice', { choice_id: choiceId });
     return response.data;
 };
 
@@ -26,7 +26,7 @@ export const getInventory = async () => {
 };
 
 export const useItem = async (itemId) => {
-    const response = await api.post('/game/use-item', { itemId });
+    const response = await api.post('/game/use-item', { item_id: itemId });
     return response.data;
 };
 

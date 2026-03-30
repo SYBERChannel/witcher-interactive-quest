@@ -1,14 +1,11 @@
-:root {
-  --color-dark-bg: #1a1a1a;
-  --color-panel-bg: #2a2a2a;
-  --color-primary: #cd5c5c;
-  --color-secondary: #d4af37;
-  --color-text: #e0e0e0;
-  --color-text-muted: #a0a0a0;
-  --color-border: #444;
-  --font-main: 'Cinzel', serif;
-  --font-body: 'Lato', sans-serif;
-}
+@import './styles/tokens.css';
+@import './styles/components.css';
+@import './styles/auth.css';
+@import './styles/mainmenu.css';
+@import './styles/game.css';
+@import './styles/battle.css';
+@import './styles/leaderboard.css';
+@import './styles/ending.css';
 
 * {
   box-sizing: border-box;
@@ -16,75 +13,60 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-body);
-  background-color: var(--color-dark-bg);
-  color: var(--color-text);
+  background-color: var(--surface);
+  color: var(--on-surface);
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-main);
-  color: var(--color-secondary);
-  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  color: var(--primary);
+  margin-bottom: var(--space-3);
+  line-height: 1.2;
 }
 
 .app-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-button {
-  cursor: pointer;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-family: var(--font-main);
-  font-size: 1rem;
-  transition: opacity 0.2s;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-button:disabled {
-  background-color: var(--color-text-muted);
-  cursor: not-allowed;
-}
-
-input {
-  background-color: var(--color-panel-bg);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  padding: 0.5rem;
-  font-size: 1rem;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-input:focus {
-  outline: 1px solid var(--color-secondary);
-}
-
 a {
-  color: var(--color-secondary);
+  color: var(--primary);
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--primary-fixed);
 }
 
-.card {
-  background-color: var(--color-panel-bg);
-  border: 1px solid var(--color-border);
-  padding: 2rem;
-  border-radius: 4px;
+::selection {
+  background: rgba(241, 201, 125, 0.25);
+  color: var(--on-surface);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-container-lowest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
 }

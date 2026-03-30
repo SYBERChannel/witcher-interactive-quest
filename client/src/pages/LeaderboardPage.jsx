@@ -22,7 +22,6 @@ const LeaderboardPage = () => {
                 if (isMounted) {
                     console.error(err);
                     setError('Failed to load leaderboard');
-                    // Mock data fallback
                     setLeaders([
                         { id: 1, username: 'Geralt_Rivia', xp: 5000, level: 10, branch: 'good' },
                         { id: 2, username: 'Vesemir_Old', xp: 4500, level: 9, branch: 'neutral' },
@@ -40,53 +39,73 @@ const LeaderboardPage = () => {
         return () => { isMounted = false; };
     }, []);
 
+    const getBranchClass = (branch) => {
+        if (branch === 'good') return 'leaderboard-branch leaderboard-branch--good';
+        if (branch === 'bad') return 'leaderboard-branch leaderboard-branch--bad';
+        return 'leaderboard-branch leaderboard-branch--neutral';
+    };
+
     return (
         <div className="leaderboard-page">
-            <header style={{ marginBottom: '2rem' }}>
-                <Link to="/">Back to Menu</Link>
-                <h1>Leaderboard</h1>
-            </header>
-
-            {loading && <div>Loading...</div>}
-            {error && <div style={{ color: 'orange', marginBottom: '1rem' }}>{error} (Showing mock data)</div>}
-
-            <div className="card">
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead>
-                        <tr style={{ borderBottom: '1px solid #444' }}>
-                            <th style={{ padding: '0.5rem' }}>Rank</th>
-                            <th style={{ padding: '0.5rem' }}>Witcher</th>
-                            <th style={{ padding: '0.5rem' }}>Level</th>
-                            <th style={{ padding: '0.5rem' }}>XP</th>
-                            <th style={{ padding: '0.5rem' }}>Path</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {leaders.map((leader, index) => {
-                            const isCurrentUser = user && user.username === leader.username;
-                            return (
-                                <tr
-                                    key={leader.id || index}
-                                    style={{
-                                        borderBottom: '1px solid #333',
-                                        backgroundColor: isCurrentUser ? 'rgba(212, 175, 55, 0.1)' : 'transparent'
-                                    }}
-                                >
-                                    <td style={{ padding: '0.5rem', color: isCurrentUser ? '#d4af37' : 'inherit' }}>
-                                        {index + 1}
-                                    </td>
-                                    <td style={{ padding: '0.5rem', fontWeight: isCurrentUser ? 'bold' : 'normal' }}>
-                                        {leader.username}
-                                    </td>
-                                    <td style={{ padding: '0.5rem' }}>{leader.level}</td>
-                                    <td style={{ padding: '0.5rem' }}>{leader.xp}</td>
-                                    <td style={{ padding: '0.5rem' }}>{leader.branch}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+            <div className="leaderboard-header">
+                <Link to="/" className="leaderboard-back">Back to Menu</Link>
+                <h1 className="leaderboard-title">Leaderboard</h1>
+                <p className="leaderboard-subtitle">The finest witchers across the Continent</p>
             </div>
+
+            {error && (
+                <div className="leaderboard-warning">
+                    {error} — Showing fallback data
+                </div>
+            )}
+
+            {loading ? (
+                <div className="leaderboard-loading">Loading chronicles...</div>
+            ) : leaders.length === 0 ? (
+                <div className="leaderboard-empty">No records found</div>
+            ) : (
+                <div className="leaderboard-content">
+                    <div className="leaderboard-table-wrapper">
+                        <table className="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Witcher</th>
+                                    <th>Level</th>
+                                    <th>XP</th>
+                                    <th>Path</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {leaders.map((leader, index) => {
+                                    const isCurrentUser = user && user.username === leader.username;
+                                    const rankClass = index < 3 ? 'leaderboard-rank leaderboard-rank--top' : 'leaderboard-rank';
+                                    return (
+                                        <tr
+                                            key={leader.id || index}
+                                            className={isCurrentUser ? 'leaderboard-row--self' : ''}
+                                        >
+                                            <td>
+                                                <span className={rankClass}>{index + 1}</span>
+                                            </td>
+                                            <td>
+                                                <span className="leaderboard-username">{leader.username}</span>
+                                            </td>
+                                            <td>{leader.level}</td>
+                                            <td>{leader.xp}</td>
+                                            <td>
+                                                <span className={getBranchClass(leader.branch)}>
+                                                    {leader.branch}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

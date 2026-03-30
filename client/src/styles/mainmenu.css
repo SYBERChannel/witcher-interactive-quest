@@ -1,0 +1,115 @@
+.main-menu-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-container-lowest);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-menu-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(241, 201, 125, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 100%, rgba(146, 7, 3, 0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.menu-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: var(--space-3) var(--space-5);
+  background: var(--surface-container-low);
+  position: relative;
+  z-index: 1;
+}
+
+.menu-user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.menu-username {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  letter-spacing: 0.03em;
+}
+
+.menu-logout-btn {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8rem;
+}
+
+.menu-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: var(--space-7);
+}
+
+.menu-brand {
+  text-align: center;
+  margin-bottom: var(--space-7);
+  animation: fadeSlideUp 0.8s ease;
+}
+
+.menu-brand-label {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--outline);
+  margin-bottom: var(--space-2);
+}
+
+.menu-brand-title {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: var(--space-2);
+  text-shadow: 0 0 40px rgba(241, 201, 125, 0.15);
+}
+
+.menu-brand-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  color: var(--on-surface-variant);
+  font-style: italic;
+}
+
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 320px;
+  animation: fadeSlideUp 1s ease 0.2s both;
+}
+
+.menu-actions .btn-primary,
+.menu-actions .btn-secondary {
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  font-size: 1rem;
+}
+
+.menu-error {
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.menu-separator {
+  width: 100%;
+  max-width: 320px;
+  margin: var(--space-2) auto;
+}

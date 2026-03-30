@@ -1,50 +1,38 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useGameState from '../../hooks/useGameState';
 
 const ChoiceList = () => {
     const { currentScene, submitChoice, loading } = useGameState();
+    const navigate = useNavigate();
 
-    if (!currentScene?.choices) return null;
+    if (!currentScene?.choices || currentScene.choices.length === 0) return null;
+
+    const handleChoice = async (choiceId) => {
+        const result = await submitChoice(choiceId);
+        if (!result) return;
+
+        if (result.leadsToBattle) {
+            navigate(`/battle/${result.leadsToBattle}`);
+        } else if (result.isEnding) {
+            navigate('/ending');
+        }
+    };
 
     return (
         <div className="choice-list">
-            {currentScene.choices.map((choice) => (
+            {currentScene.choices.map((choice, index) => (
                 <button
                     key={choice.id}
                     className="choice-btn"
-                    onClick={() => submitChoice(choice.id)}
+                    onClick={() => handleChoice(choice.id)}
                     disabled={loading}
+                    style={{ animationDelay: `${index * 0.08}s` }}
                 >
-                    {choice.label}
+                    <span className="choice-marker">{String.fromCharCode(9670)}</span>
+                    <span className="choice-text">{choice.label}</span>
                 </button>
             ))}
-
-            <style>{`
-                .choice-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                    max-width: 600px;
-                    margin: 0 auto;
-                }
-                .choice-btn {
-                    background: transparent;
-                    border: 1px solid #d4af37;
-                    color: #d4af37;
-                    padding: 1rem;
-                    font-size: 1.1rem;
-                    transition: all 0.3s ease;
-                    text-align: left;
-                }
-                .choice-btn:hover:not(:disabled) {
-                    background: rgba(212, 175, 55, 0.1);
-                    transform: translateX(5px);
-                }
-                .choice-btn:disabled {
-                    border-color: #555;
-                    color: #555;
-                }
-            `}</style>
         </div>
     );
 };

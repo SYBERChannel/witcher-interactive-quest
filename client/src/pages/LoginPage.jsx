@@ -14,40 +14,63 @@ const LoginPage = () => {
             await login(email, password);
             navigate('/');
         } catch (err) {
-            // error handled in hook
         }
     };
 
     return (
-        <div className="card" style={{ maxWidth: '400px', margin: '4rem auto' }}>
-            <h2>Login</h2>
-            {error && <div style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+        <div className="auth-page">
+            <div className="auth-container">
+                <div className="auth-header">
+                    <div className="auth-emblem">The Continent Awaits</div>
+                    <h1 className="auth-title">Sign In</h1>
+                    <p className="auth-subtitle">Return to your path, Witcher</p>
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+
+                {error && <div className="stitch-error">{error}</div>}
+
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <div className="stitch-input-group">
+                        <label htmlFor="login-email">Email</label>
+                        <input
+                            id="login-email"
+                            className="stitch-input"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="geralt@kaermorhen.com"
+                            required
+                        />
+                    </div>
+                    <div className="stitch-input-group">
+                        <label htmlFor="login-password">Password</label>
+                        <input
+                            id="login-password"
+                            className="stitch-input"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn-primary auth-submit"
+                        disabled={loading}
+                    >
+                        {loading ? 'Entering...' : 'Enter the Path'}
+                    </button>
+                </form>
+
+                <div className="auth-footer">
+                    <span className="auth-footer-text">
+                        No chronicle yet?{' '}
+                        <Link to="/register" className="auth-footer-link">
+                            Begin your tale
+                        </Link>
+                    </span>
                 </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-            </form>
-            <p style={{ marginTop: '1rem' }}>
-                Don't have an account? <Link to="/register">Register here</Link>
-            </p>
+            </div>
         </div>
     );
 };

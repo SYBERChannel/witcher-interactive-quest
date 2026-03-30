@@ -14,15 +14,21 @@ const GamePage = () => {
     }, []);
 
     if (loading && !gameState) {
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading world...</div>;
+        return (
+            <div className="scene-placeholder">
+                Loading world...
+            </div>
+        );
     }
 
     if (error) {
         return (
-            <div style={{ padding: '2rem', textAlign: 'center', color: '#cd5c5c' }}>
-                <h3>Error</h3>
-                <p>{error}</p>
-                <button onClick={fetchState}>Retry</button>
+            <div className="scene-placeholder" style={{ flexDirection: 'column', gap: 'var(--space-3)' }}>
+                <span style={{ color: 'var(--error)', fontFamily: 'var(--font-display)', fontSize: '1.3rem' }}>
+                    Something went wrong
+                </span>
+                <span style={{ color: 'var(--outline)' }}>{error}</span>
+                <button className="btn-secondary" onClick={fetchState}>Retry</button>
             </div>
         );
     }
@@ -43,43 +49,6 @@ const GamePage = () => {
             </div>
 
             <RandomEventModal />
-
-            <style>{`
-                .game-page {
-                    min-height: 100vh;
-                    display: flex;
-                    flex-direction: column;
-                }
-                .game-layout {
-                    display: grid;
-                    grid-template-columns: 1fr 300px;
-                    gap: 2rem;
-                    padding: 2rem;
-                    flex: 1;
-                    max-width: 1400px;
-                    margin: 0 auto;
-                    width: 100%;
-                }
-                .game-main {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .game-sidebar {
-                    border-left: 1px solid #333;
-                    padding-left: 1rem;
-                }
-                @media (max-width: 900px) {
-                    .game-layout {
-                        grid-template-columns: 1fr;
-                    }
-                    .game-sidebar {
-                        border-left: none;
-                        border-top: 1px solid #333;
-                        padding-left: 0;
-                        padding-top: 1rem;
-                    }
-                }
-            `}</style>
         </div>
     );
 };
