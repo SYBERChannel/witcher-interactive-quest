@@ -69,29 +69,33 @@ const BattleArena = () => {
                 </div>
             </div>
 
-            <div className="absolute inset-0 z-10 w-full h-full flex items-start justify-between px-4 sm:px-24 pt-36">
+            <div className="absolute inset-0 z-10 w-full h-full flex items-end justify-between px-4 sm:px-24 pb-[230px] sm:pb-[140px] pointer-events-none">
                 <motion.div
-                    className="relative w-2/5 sm:w-1/3 h-3/4 flex items-start justify-center"
+                    className="relative w-[45%] sm:w-1/3 max-h-[50%] sm:max-h-[65%] flex items-end justify-start sm:justify-center"
                     animate={getPlayerAnimation()}
                 >
-                    <img
-                        alt="Геральт"
-                        className="h-full w-full object-contain object-top drop-shadow-[0_0_30px_rgba(241,201,125,0.2)]"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7cJVfYTW1vIVEo2AZE8ov22lJujF1uIumXjUH-Q5eQC-2XO3p5o1_JfPfm3RPXazs7ksXIXWj2SlcmQmQ8FOvekCLd-76XVbW1CwAL8OcEHufCGthbyNWzQ4aDevMtfQyHlscpttwQL5botSPp4bNYl4VpwYFF8kVG0uLmL6PbSEkhahuOUP4JFmwAokVzeqF0YdjzrcUj1ZDAHDARscPNVx2CAK77XjyskfZQwP4pxgyKgrKXuxuDOQXVOKvXnJPTXo9LGFEcZQ_"
-                    />
-                    {roundResult?.playerDamage > 0 && (
-                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none" />
-                    )}
+                    <div className="relative inline-block h-full">
+                        <img
+                            alt="Геральт"
+                            className="max-h-full w-auto object-contain object-bottom drop-shadow-[0_0_30px_rgba(241,201,125,0.2)]"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7cJVfYTW1vIVEo2AZE8ov22lJujF1uIumXjUH-Q5eQC-2XO3p5o1_JfPfm3RPXazs7ksXIXWj2SlcmQmQ8FOvekCLd-76XVbW1CwAL8OcEHufCGthbyNWzQ4aDevMtfQyHlscpttwQL5botSPp4bNYl4VpwYFF8kVG0uLmL6PbSEkhahuOUP4JFmwAokVzeqF0YdjzrcUj1ZDAHDARscPNVx2CAK77XjyskfZQwP4pxgyKgrKXuxuDOQXVOKvXnJPTXo9LGFEcZQ_"
+                        />
+                        {roundResult?.playerDamage > 0 && (
+                            <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse" />
+                        )}
+                    </div>
                 </motion.div>
 
                 <motion.div
-                    className="relative w-2/5 sm:w-1/2 h-3/4 flex items-start justify-center transform scale-x-[-1]"
+                    className="relative w-[45%] sm:w-1/2 max-h-[50%] sm:max-h-[65%] flex items-end justify-end sm:justify-center transform scale-x-[-1]"
                     animate={roundResult?.enemyDamage > 0 ? { x: [0, 15, 0], opacity: [1, 0.6, 1] } : {}}
                 >
-                    <img alt={enemy.name} className="h-full w-full object-contain object-top monster-glow brightness-75" src={enemyImageUrl} />
-                    {roundResult?.enemyDamage > 0 && (
-                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none" />
-                    )}
+                    <div className="relative inline-block h-full">
+                        <img alt={enemy.name} className="max-h-full w-auto object-contain object-bottom monster-glow brightness-75" src={enemyImageUrl} />
+                        {roundResult?.enemyDamage > 0 && (
+                            <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse" />
+                        )}
+                    </div>
                 </motion.div>
             </div>
 
@@ -170,7 +174,7 @@ const BattleArena = () => {
                 ) : (
                     <div className="flex items-stretch">
                         <button
-                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50 border-r border-outline-variant/30 last:border-r-0"
                             onClick={() => handleAction('attack')}
                             disabled={loading}
                         >
@@ -178,7 +182,7 @@ const BattleArena = () => {
                             <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Атака</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50 border-r border-outline-variant/30 last:border-r-0"
                             onClick={() => handleAction('parry')}
                             disabled={loading}
                         >
@@ -186,7 +190,7 @@ const BattleArena = () => {
                             <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Парирование</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50 border-r border-outline-variant/30 last:border-r-0"
                             onClick={() => handleAction('sign')}
                             disabled={loading}
                         >
@@ -194,7 +198,7 @@ const BattleArena = () => {
                             <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Знак</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50 border-r border-outline-variant/30 last:border-r-0"
                             onClick={() => handleAction('potion')}
                             disabled={loading}
                         >

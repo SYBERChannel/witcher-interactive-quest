@@ -60,7 +60,6 @@ export const AudioProvider = ({ children }) => {
             }}>
                 <button
                     onClick={toggleMute}
-                    onTouchEnd={toggleMute}
                     style={{
                         background: 'rgba(10,8,8,0.85)',
                         color: 'var(--primary)',
