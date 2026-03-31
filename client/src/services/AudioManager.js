@@ -62,17 +62,21 @@ class AudioManager {
         this.bgMusic.setAttribute('playsinline', '');
         this.currentTrack = src;
 
+        // ONLY play if we are not muted and the page is visible.
+        // On iOS Safari, volume=0 is ignored, so playing while muted means playing at full volume.
+        if (this.isMuted || document.hidden) {
+            if (document.hidden && !this.isMuted) {
+                this._wasPlayingBeforeHidden = true;
+            }
+            return;
+        }
+
         const playPromise = this.bgMusic.play();
         if (playPromise !== undefined) {
             playPromise.catch(() => {
                 this._pendingTrack = trackName;
                 this._attachResumeListeners();
             });
-        }
-        
-        // If document is already hidden, pause immediately
-        if (document.hidden) {
-            this._pauseForVisibility();
         }
     }
 

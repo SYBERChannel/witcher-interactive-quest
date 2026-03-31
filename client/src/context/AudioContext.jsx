@@ -38,6 +38,7 @@ export const AudioProvider = ({ children }) => {
     }, []);
 
     const toggleMute = (e) => {
+        e.preventDefault();
         e.stopPropagation();
         const newMuted = audioManager.toggleMute();
         setIsMuted(newMuted);
