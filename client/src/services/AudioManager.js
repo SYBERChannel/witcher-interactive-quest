@@ -9,6 +9,7 @@ class AudioManager {
         this.volume = 0.3;
         this.isMuted = localStorage.getItem('audio_muted') === 'true';
         this.fadeDuration = 2000;
+        this._pendingTrack = null;
 
         AudioManager.instance = this;
     }
@@ -34,12 +35,31 @@ class AudioManager {
         this.bgMusic = new Audio(src);
         this.bgMusic.loop = true;
         this.bgMusic.volume = this.isMuted ? 0 : this.volume;
+        this.bgMusic.playsInline = true;
+        this.bgMusic.setAttribute('playsinline', '');
         this.currentTrack = src;
 
         const playPromise = this.bgMusic.play();
         if (playPromise !== undefined) {
-            playPromise.catch(() => {});
+            playPromise.catch(() => {
+                this._pendingTrack = trackName;
+                this._attachResumeListeners();
+            });
         }
+    }
+
+    _attachResumeListeners() {
+        const resume = () => {
+            if (this._pendingTrack) {
+                const t = this._pendingTrack;
+                this._pendingTrack = null;
+                this.play(t);
+            }
+            document.removeEventListener('touchend', resume, { once: true });
+            document.removeEventListener('click', resume, { once: true });
+        };
+        document.addEventListener('touchend', resume, { once: true });
+        document.addEventListener('click', resume, { once: true });
     }
 
     stop() {
@@ -82,6 +102,11 @@ class AudioManager {
         localStorage.setItem('audio_muted', this.isMuted);
         if (this.bgMusic) {
             this.bgMusic.volume = this.isMuted ? 0 : this.volume;
+        }
+        if (!this.isMuted && this._pendingTrack) {
+            const t = this._pendingTrack;
+            this._pendingTrack = null;
+            this.play(t);
         }
         return this.isMuted;
     }

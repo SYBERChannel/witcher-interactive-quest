@@ -32,7 +32,7 @@ const BattleArena = () => {
     const playerLevel = player.level || 1;
     const xpInCurrentLevel = (battleData.xpTotal || 0) % XP_PER_LEVEL;
     const xpPercent = (xpInCurrentLevel / XP_PER_LEVEL) * 100;
-    
+
     const enemyImageUrl = ENEMY_IMAGES[enemy.name] || ENEMY_IMAGES['default'];
 
     const handleAction = async (type) => {
@@ -53,43 +53,46 @@ const BattleArena = () => {
 
     return (
         <main className="relative h-screen w-full flex flex-col overflow-hidden bg-surface-container-lowest">
-            <div className="absolute inset-0 z-10 w-full h-full flex items-center justify-between px-24">
-                <div
-                    className="absolute inset-0 opacity-40 bg-cover bg-center grayscale mix-blend-overlay"
-                    style={{ backgroundImage: "url('/backgrounds/battle_arena.png')" }}
-                ></div>
-                <div className="absolute inset-0 vignette"></div>
+            <div className="absolute inset-0 opacity-40 bg-cover bg-center grayscale mix-blend-overlay"
+                style={{ backgroundImage: "url('/backgrounds/battle_arena.png')" }}
+            />
+            <div className="absolute inset-0 vignette" />
 
-                <motion.div
-                    className="relative w-1/3 h-4/5 flex items-end justify-center"
-                    animate={getPlayerAnimation()}
-                >
-                    <img alt="Геральт" className="h-full w-full object-contain object-bottom drop-shadow-[0_0_30px_rgba(241,201,125,0.2)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7cJVfYTW1vIVEo2AZE8ov22lJujF1uIumXjUH-Q5eQC-2XO3p5o1_JfPfm3RPXazs7ksXIXWj2SlcmQmQ8FOvekCLd-76XVbW1CwAL8OcEHufCGthbyNWzQ4aDevMtfQyHlscpttwQL5botSPp4bNYl4VpwYFF8kVG0uLmL6PbSEkhahuOUP4JFmwAokVzeqF0YdjzrcUj1ZDAHDARscPNVx2CAK77XjyskfZQwP4pxgyKgrKXuxuDOQXVOKvXnJPTXo9LGFEcZQ_" />
-                    {roundResult?.playerDamage > 0 && (
-                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none"></div>
-                    )}
-                </motion.div>
-
-                <motion.div
-                    className="relative w-1/2 h-full flex items-center justify-center transform scale-x-[-1]"
-                    animate={roundResult?.enemyDamage > 0 ? { x: [0, 15, 0], opacity: [1, 0.6, 1] } : {}}
-                >
-                    <img alt={enemy.name} className="h-[90%] w-full object-contain monster-glow brightness-75" src={enemyImageUrl} />
-                    {roundResult?.enemyDamage > 0 && (
-                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none"></div>
-                    )}
-                </motion.div>
-            </div>
-
-            <div className="relative z-20 w-full px-12 pt-20 flex flex-col items-center">
-                <h1 className="font-headline text-3xl tracking-widest text-on-surface uppercase mb-2">{enemy.name}</h1>
+            <div className="relative z-20 w-full px-4 sm:px-12 pt-20 flex flex-col items-center">
+                <h1 className="font-headline text-xl sm:text-3xl tracking-widest text-on-surface uppercase mb-2">{enemy.name}</h1>
                 <div className="w-full max-w-3xl h-3 bg-surface-container-highest overflow-hidden">
-                    <div className="h-full hp-gradient shadow-[0_0_15px_rgba(146,7,3,0.5)] transition-all duration-500" style={{ width: `${Math.max(0, enemyHpPercent)}%` }}></div>
+                    <div className="h-full hp-gradient shadow-[0_0_15px_rgba(146,7,3,0.5)] transition-all duration-500" style={{ width: `${Math.max(0, enemyHpPercent)}%` }} />
                 </div>
                 <div className="w-full max-w-3xl flex justify-between mt-1 px-1">
                     <span className="font-label text-[10px] tracking-widest text-secondary uppercase">Здоровье</span>
                     <span className="font-label text-[10px] tracking-widest text-on-surface-variant">{enemy.hp.toLocaleString()} / {enemy.maxHp.toLocaleString()}</span>
                 </div>
+            </div>
+
+            <div className="absolute inset-0 z-10 w-full h-full flex items-start justify-between px-4 sm:px-24 pt-36">
+                <motion.div
+                    className="relative w-2/5 sm:w-1/3 h-3/4 flex items-start justify-center"
+                    animate={getPlayerAnimation()}
+                >
+                    <img
+                        alt="Геральт"
+                        className="h-full w-full object-contain object-top drop-shadow-[0_0_30px_rgba(241,201,125,0.2)]"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7cJVfYTW1vIVEo2AZE8ov22lJujF1uIumXjUH-Q5eQC-2XO3p5o1_JfPfm3RPXazs7ksXIXWj2SlcmQmQ8FOvekCLd-76XVbW1CwAL8OcEHufCGthbyNWzQ4aDevMtfQyHlscpttwQL5botSPp4bNYl4VpwYFF8kVG0uLmL6PbSEkhahuOUP4JFmwAokVzeqF0YdjzrcUj1ZDAHDARscPNVx2CAK77XjyskfZQwP4pxgyKgrKXuxuDOQXVOKvXnJPTXo9LGFEcZQ_"
+                    />
+                    {roundResult?.playerDamage > 0 && (
+                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none" />
+                    )}
+                </motion.div>
+
+                <motion.div
+                    className="relative w-2/5 sm:w-1/2 h-3/4 flex items-start justify-center transform scale-x-[-1]"
+                    animate={roundResult?.enemyDamage > 0 ? { x: [0, 15, 0], opacity: [1, 0.6, 1] } : {}}
+                >
+                    <img alt={enemy.name} className="h-full w-full object-contain object-top monster-glow brightness-75" src={enemyImageUrl} />
+                    {roundResult?.enemyDamage > 0 && (
+                        <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none" />
+                    )}
+                </motion.div>
             </div>
 
             <AnimatePresence>
@@ -105,15 +108,15 @@ const BattleArena = () => {
                 )}
             </AnimatePresence>
 
-            <div className="absolute inset-x-0 bottom-44 px-12 flex justify-between items-end z-20 pointer-events-none">
-                <div className="flex flex-col gap-3 w-72 pointer-events-auto">
+            <div className="absolute inset-x-0 bottom-20 sm:bottom-36 px-4 sm:px-12 flex justify-between items-end z-20 pointer-events-none">
+                <div className="flex flex-col gap-2 w-40 sm:w-72 pointer-events-auto">
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-end">
-                            <span className="font-headline text-lg text-primary tracking-tighter">Геральт из Ривии</span>
+                            <span className="font-headline text-sm sm:text-lg text-primary tracking-tighter">Геральт из Ривии</span>
                             <span className="font-label text-[10px] text-on-surface-variant">УР. {playerLevel}</span>
                         </div>
                         <div className="h-2 w-full bg-surface-container-highest">
-                            <div className="h-full hp-gradient transition-all duration-500" style={{ width: `${Math.max(0, playerHpPercent)}%` }}></div>
+                            <div className="h-full hp-gradient transition-all duration-500" style={{ width: `${Math.max(0, playerHpPercent)}%` }} />
                         </div>
                         <div className="flex justify-between mt-0.5">
                             <span className="font-label text-[9px] text-secondary uppercase">Здоровье</span>
@@ -122,7 +125,7 @@ const BattleArena = () => {
                     </div>
                 </div>
 
-                <div className="w-80 p-6 bg-surface-container-low/80 backdrop-blur-md border-l-4 border-primary-container pointer-events-auto min-h-[120px]">
+                <div className="hidden sm:block w-80 p-6 bg-surface-container-low/80 backdrop-blur-md border-l-4 border-primary-container pointer-events-auto min-h-[120px]">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={roundResult?.logMessage || 'init'}
@@ -138,67 +141,73 @@ const BattleArena = () => {
                 </div>
             </div>
 
-            <div className="mt-auto relative z-30 h-32 bg-surface-container-lowest flex items-center justify-center gap-4 px-12 border-t border-outline-variant/20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+            {roundResult?.logMessage && (
+                <div className="sm:hidden absolute inset-x-0 bottom-20 px-4 z-20 pointer-events-none flex justify-end">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={roundResult.logMessage}
+                            className="w-1/2 p-3 bg-surface-container-low/85 backdrop-blur-md border-l-2 border-primary-container"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 1.05 }}
+                        >
+                            <p className="font-body italic text-xs text-on-surface-variant leading-relaxed">
+                                {roundResult.logMessage}
+                            </p>
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            )}
+
+            <div className="mt-auto relative z-30 bg-surface-container-lowest border-t border-outline-variant/20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
                 {isOver ? (
-                    <div className="flex flex-col items-center">
+                    <div className="h-20 flex flex-col items-center justify-center">
                         <h2 className={`font-headline text-2xl uppercase tracking-widest ${battleData.outcome === 'won' ? 'text-primary' : 'text-secondary'}`}>
                             {battleData.outcome === 'won' ? 'Победа' : 'Поражение'}
                         </h2>
                         <p className="font-label text-[10px] text-on-surface-variant mt-1">БОЙ ЗАВЕРШЁН</p>
                     </div>
                 ) : (
-                    <>
+                    <div className="flex items-stretch">
                         <button
-                            className="group relative flex flex-col items-center justify-center w-48 h-20 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 transform active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
                             onClick={() => handleAction('attack')}
                             disabled={loading}
                         >
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">swords</span>
-                                <span className="font-headline text-lg tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors">Атака</span>
-                            </div>
-                            <span className="font-label text-[9px] text-on-surface-variant mt-1 tracking-widest">ЛКМ</span>
+                            <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-xl sm:text-2xl">swords</span>
+                            <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Атака</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center w-48 h-20 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 transform active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
                             onClick={() => handleAction('parry')}
                             disabled={loading}
                         >
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">shield</span>
-                                <span className="font-headline text-lg tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors">Парирование</span>
-                            </div>
-                            <span className="font-label text-[9px] text-on-surface-variant mt-1 tracking-widest">ПКМ</span>
+                            <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-xl sm:text-2xl">shield</span>
+                            <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Парирование</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center w-48 h-20 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 transform active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
                             onClick={() => handleAction('sign')}
                             disabled={loading}
                         >
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-                                <span className="font-headline text-lg tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors">Знак</span>
-                            </div>
-                            <span className="font-label text-[9px] text-on-surface-variant mt-1 tracking-widest">Q</span>
+                            <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-xl sm:text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+                            <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Знак</span>
                         </button>
                         <button
-                            className="group relative flex flex-col items-center justify-center w-48 h-20 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 transform active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
+                            className="group relative flex flex-col items-center justify-center flex-1 py-4 sm:py-5 bg-surface-container hover:bg-surface-container-highest transition-all duration-300 active:scale-95 border-b-2 border-transparent hover:border-primary disabled:opacity-50"
                             onClick={() => handleAction('potion')}
                             disabled={loading}
                         >
-                            <div className="flex items-center gap-3">
-                                <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">science</span>
-                                <span className="font-headline text-lg tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors">Зелье</span>
-                            </div>
-                            <span className="font-label text-[9px] text-on-surface-variant mt-1 tracking-widest">R</span>
+                            <span className="material-symbols-outlined text-primary group-hover:scale-110 transition-transform text-xl sm:text-2xl">science</span>
+                            <span className="font-headline text-xs sm:text-sm tracking-widest uppercase text-on-surface group-hover:text-primary transition-colors mt-1">Зелье</span>
                         </button>
-                    </>
+                    </div>
                 )}
             </div>
 
             {isInventoryOpen && (
                 <>
-                    <div className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={() => setIsInventoryOpen(false)}></div>
+                    <div className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={() => setIsInventoryOpen(false)} />
                     <aside className="fixed top-0 right-0 h-full w-80 bg-surface-container-low p-6 flex flex-col gap-6 border-l border-outline-variant/10 shadow-2xl z-50 overflow-y-auto">
                         <Inventory />
                     </aside>
