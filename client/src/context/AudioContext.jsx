@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import audioManager from '../services/AudioManager';
 
 const AudioContext = createContext(null);
@@ -6,7 +6,6 @@ const AudioContext = createContext(null);
 export const AudioProvider = ({ children }) => {
     const [isMuted, setIsMuted] = useState(audioManager.getMuted());
     const [isBattlePage, setIsBattlePage] = useState(false);
-    const interactionStarted = useRef(false);
 
     useEffect(() => {
         const checkPath = () => {
@@ -17,34 +16,46 @@ export const AudioProvider = ({ children }) => {
         return () => window.removeEventListener('popstate', checkPath);
     }, []);
 
+    // Global unlocker logic for stringent browser compatibility (iOS Safari autoplay policies)
     useEffect(() => {
-        const startAudio = () => {
-            if (interactionStarted.current) return;
-            if (!audioManager.bgMusic && !audioManager.currentTrack) {
-                audioManager.play('menu');
+        const handleFirstInteraction = () => {
+            if (!audioManager.isUnlocked) {
+                audioManager.isUnlocked = true;
+                
+                if (!audioManager.getMuted()) {
+                    if (audioManager.currentTrack) {
+                        audioManager._safePlay(); // Resume any queued track
+                    } else {
+                        audioManager.play('menu'); // Load default music
+                    }
+                }
             }
-            interactionStarted.current = true;
+            
+            // Unlocking only needs to happen once
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+            window.removeEventListener('keydown', handleFirstInteraction);
         };
 
-        window.addEventListener('click', startAudio, { once: true });
-        window.addEventListener('touchend', startAudio, { once: true });
-        window.addEventListener('keydown', startAudio, { once: true });
+        // touchstart is registered earlier in the interaction sequence than click on iOS
+        window.addEventListener('click', handleFirstInteraction, { passive: true });
+        window.addEventListener('touchstart', handleFirstInteraction, { passive: true });
+        window.addEventListener('keydown', handleFirstInteraction, { passive: true });
 
         return () => {
-            window.removeEventListener('click', startAudio);
-            window.removeEventListener('touchend', startAudio);
-            window.removeEventListener('keydown', startAudio);
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+            window.removeEventListener('keydown', handleFirstInteraction);
         };
     }, []);
 
     const toggleMute = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        
+        // Ensure state updates to UI
         const newMuted = audioManager.toggleMute();
         setIsMuted(newMuted);
-        if (!newMuted && !audioManager.bgMusic && !audioManager.currentTrack) {
-            audioManager.play('menu');
-        }
     };
 
     const bottomOffset = isBattlePage ? '90px' : '15px';

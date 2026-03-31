@@ -4,40 +4,30 @@ class AudioManager {
             return AudioManager.instance;
         }
 
-        this.bgMusic = null;
+        // Single persistent HTMLAudioElement.
+        // Reusing this instance is critical for iOS Safari so it stays "unlocked"
+        // after the user's first interaction.
+        this.audio = new Audio();
+        this.audio.loop = true;
+        this.audio.playsInline = true;
+        this.audio.setAttribute('playsinline', '');
+        this.audio.preload = 'auto';
+
         this.currentTrack = null;
         this.volume = 0.3;
         this.isMuted = localStorage.getItem('audio_muted') === 'true';
-        this.fadeDuration = 2000;
+        this.isUnlocked = false; // Tracks if a user gesture has unlocked audio
+        this.playPromise = null;
         this._pendingTrack = null;
+        this._wasPlayingBeforeHidden = false;
 
-        // Auto-pause when tab is hidden, resume when visible
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this._pauseForVisibility();
-            } else {
-                this._resumeFromVisibility();
-            }
-        });
+        this._handleVisibilityChange = this._handleVisibilityChange.bind(this);
+        document.addEventListener('visibilitychange', this._handleVisibilityChange);
 
         AudioManager.instance = this;
     }
 
-    _pauseForVisibility() {
-        if (this.bgMusic && !this.bgMusic.paused) {
-            this.bgMusic.pause();
-            this._wasPlayingBeforeHidden = true;
-        }
-    }
-
-    _resumeFromVisibility() {
-        if (this._wasPlayingBeforeHidden && this.bgMusic && !this.isMuted) {
-            this.bgMusic.play().catch(e => console.log("Visibility resume failed:", e));
-        }
-        this._wasPlayingBeforeHidden = false;
-    }
-
-    play(trackName) {
+    getTrackSrc(trackName) {
         const trackMap = {
             kaer_morhen_theme: '/music/spikeroog.mp3',
             tavern: '/music/spikeroog.mp3',
@@ -46,109 +36,143 @@ class AudioManager {
             wild_hunt_theme: '/music/Cloak&Dagger.mp3',
             menu: '/music/spikeroog.mp3',
         };
+        return trackMap[trackName] || trackMap.menu;
+    }
 
-        const src = trackMap[trackName] || trackMap.menu;
+    play(trackName) {
+        const src = this.getTrackSrc(trackName);
 
-        if (this.currentTrack === src && this.bgMusic && !this.bgMusic.paused) {
-            return;
-        }
-
-        this.stop();
-
-        this.bgMusic = new Audio(src);
-        this.bgMusic.loop = true;
-        this.bgMusic.volume = this.isMuted ? 0 : this.volume;
-        this.bgMusic.playsInline = true;
-        this.bgMusic.setAttribute('playsinline', '');
-        this.currentTrack = src;
-
-        // ONLY play if we are not muted and the page is visible.
-        // On iOS Safari, volume=0 is ignored, so playing while muted means playing at full volume.
-        if (this.isMuted || document.hidden) {
-            if (document.hidden && !this.isMuted) {
-                this._wasPlayingBeforeHidden = true;
+        // If it's already the same track, ensure it's playing if meant to be
+        if (this.currentTrack === src) {
+            if (!this.isMuted && !document.hidden && this.isUnlocked) {
+                this._safePlay();
             }
             return;
         }
 
-        const playPromise = this.bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(() => {
-                this._pendingTrack = trackName;
-                this._attachResumeListeners();
+        this.currentTrack = src;
+        this._pendingTrack = null;
+        
+        // Changing src. Do not pause explicitly here as modifying src halts playback.
+        this.audio.src = src;
+        this.audio.load();
+
+        if (this.isMuted || document.hidden) {
+            return; // Don't attempt to play
+        }
+
+        if (this.isUnlocked) {
+            this._safePlay();
+        } else {
+            this._pendingTrack = trackName;
+        }
+    }
+
+    _safePlay() {
+        if (!this.audio.src) return;
+
+        // Apply volume (iOS will ignore this, which is normal hardware behavior)
+        this.audio.volume = this.volume;
+
+        // Handle the play promise gracefully.
+        // Safari throws DOMExceptions if pause() is called while play() is resolving.
+        if (this.playPromise !== null) {
+            this.playPromise.then(() => {
+                this._performPlay();
+            }).catch(() => {
+                this._performPlay();
+            });
+        } else {
+            this._performPlay();
+        }
+    }
+
+    _performPlay() {
+        if (this.isMuted || document.hidden) return; // double check state
+        const promise = this.audio.play();
+        if (promise !== undefined) {
+            this.playPromise = promise;
+            promise.then(() => {
+                this.playPromise = null;
+            }).catch((err) => {
+                this.playPromise = null;
+                console.warn('Playback prevented by browser:', err);
+                if (err.name === 'NotAllowedError') {
+                    this.isUnlocked = false; // We lost gesture unlock
+                }
             });
         }
     }
 
-    _attachResumeListeners() {
-        const resume = () => {
-            if (this._pendingTrack) {
-                const t = this._pendingTrack;
-                this._pendingTrack = null;
-                this.play(t);
+    _safePause() {
+        if (!this.audio.src) return;
+
+        if (this.playPromise !== null) {
+            this.playPromise.then(() => {
+                this.audio.pause();
+            }).catch(() => {
+                this.audio.pause();
+            });
+        } else {
+            this.audio.pause();
+        }
+    }
+
+    _handleVisibilityChange() {
+        if (document.hidden) {
+            if (!this.audio.paused) {
+                this._wasPlayingBeforeHidden = true;
+                this._safePause();
             }
-            document.removeEventListener('touchend', resume, { once: true });
-            document.removeEventListener('click', resume, { once: true });
-        };
-        document.addEventListener('touchend', resume, { once: true });
-        document.addEventListener('click', resume, { once: true });
+        } else {
+            if (this._wasPlayingBeforeHidden && !this.isMuted && this.isUnlocked) {
+                this._safePlay();
+            }
+            this._wasPlayingBeforeHidden = false;
+        }
     }
 
     stop() {
-        if (this.bgMusic) {
-            this.bgMusic.pause();
-            this.bgMusic.currentTime = 0;
-            this.bgMusic = null;
-            this.currentTrack = null;
-        }
+        this._safePause();
+        this.audio.currentTime = 0;
+        this.currentTrack = null;
     }
 
     fadeOut(duration) {
-        if (!this.bgMusic) return;
-        const ms = duration || this.fadeDuration;
-        const steps = 20;
-        const stepTime = ms / steps;
-        const volumeStep = this.bgMusic.volume / steps;
-        let currentStep = 0;
-
-        const interval = setInterval(() => {
-            currentStep++;
-            if (currentStep >= steps || !this.bgMusic) {
-                clearInterval(interval);
-                this.stop();
-            } else {
-                this.bgMusic.volume = Math.max(0, this.bgMusic.volume - volumeStep);
-            }
-        }, stepTime);
-    }
-
-    setVolume(vol) {
-        this.volume = Math.max(0, Math.min(1, vol));
-        if (this.bgMusic && !this.isMuted) {
-            this.bgMusic.volume = this.volume;
-        }
+        // iOS ignores JS volume fading entirely.
+        // For cross-platform stability, just stop gracefully.
+        this.stop();
     }
 
     toggleMute() {
         this.isMuted = !this.isMuted;
-        localStorage.setItem('audio_muted', this.isMuted);
-        
-        if (this.bgMusic) {
-            if (this.isMuted) {
-                this.bgMusic.volume = 0;
-                this.bgMusic.pause();
+        localStorage.setItem('audio_muted', String(this.isMuted));
+
+        // Interaction unlocking
+        this.isUnlocked = true;
+
+        if (this.isMuted) {
+            this._safePause();
+        } else {
+            if (this._pendingTrack) {
+                const t = this._pendingTrack;
+                this._pendingTrack = null;
+                this.play(t);
+            } else if (this.currentTrack) {
+                this._safePlay();
             } else {
-                this.bgMusic.volume = this.volume;
-                this.bgMusic.play().catch(e => console.log("Resume failed:", e));
+                this.play('menu');
             }
         }
         
-        if (!this.isMuted && this._pendingTrack) {
-            const t = this._pendingTrack;
-            this._pendingTrack = null;
-            this.play(t);
-        }
         return this.isMuted;
+    }
+
+    setVolume(vol) {
+        this.volume = Math.max(0, Math.min(1, vol));
+        if (!this.isMuted) {
+            this.audio.volume = this.volume;
+        }
     }
 
     getMuted() {
