@@ -1,0 +1,114 @@
+[
+    {
+        "id": "act2_bad_01",
+        "branch": "bad",
+        "title": "Кровавый Барон",
+        "text": "Крепость барона возвышается над болотами, окружённая частоколом из заострённых брёвен. Внутри — пьяный вояка, что правит этими землями железным кулаком. Его люди привели Геральта силой. «Ведьмак,» — рычит барон, ударяя кулаком по столу. «Моя жена сбежала. Найди её — или я скормлю тебя своим псам. А в награду — расскажу, где Охота прячет свой портал.»",
+        "background": "/backgrounds/tavern.png",
+        "music": "tavern",
+        "choices": [
+            {
+                "id": "act2_bad_01_accept",
+                "label": "Принять контракт барона",
+                "next_scene_id": "act2_bad_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "baron_contract" },
+                    { "type": "add_xp", "amount": 15 },
+                    { "type": "add_gold", "amount": 200 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act2_bad_01_threaten",
+                "label": "Пригрозить барону — ведьмак никому не служит",
+                "next_scene_id": "act2_bad_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "intimidated_baron" },
+                    { "type": "add_xp", "amount": 25 }
+                ],
+                "leads_to_battle": "gravelier",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["wraith_ambush"],
+        "random_event_chance": 0.2
+    },
+    {
+        "id": "act2_bad_02",
+        "branch": "bad",
+        "title": "Болотные Ведьмы",
+        "text": "Тропа через болота уводит Геральта вглубь туманных топей. Три хижины, сплетённые из костей и ветвей, стоят у края чёрного озера. Болотные Ведьмы — древние создания, что правят этими землями задолго до людей. Старшая из них выходит из тумана: «Ведьмак ищет путь к Охоте? Мы знаем дорогу. Но за каждое знание — цена крови.»",
+        "background": "/backgrounds/forest.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "act2_bad_02_deal",
+                "label": "Заключить сделку с Ведьмами",
+                "next_scene_id": "act2_bad_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "witch_deal" },
+                    { "type": "modify_hp", "amount": -15 },
+                    { "type": "add_xp", "amount": 30 },
+                    { "type": "add_item", "item": "swallow_potion" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act2_bad_02_fight",
+                "label": "Отказаться и пробиться с боем",
+                "next_scene_id": "act2_bad_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "fought_witches" },
+                    { "type": "add_xp", "amount": 25 }
+                ],
+                "leads_to_battle": "wraith",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["magic_trap"],
+        "random_event_chance": 0.3
+    },
+    {
+        "id": "act2_bad_03",
+        "branch": "bad",
+        "title": "Портал Бездны",
+        "text": "В сердце болот открывается портал — разлом между мирами, из которого веет ледяным дыханием Дикой Охоты. У его входа — два стража в чёрных доспехах. Эредин ждёт по ту сторону. Геральт чувствует, как медальон бьёт в грудь, предупреждая о мощной магии. Это путь в одну сторону.",
+        "background": "/backgrounds/wild_hunt_fortress.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "act2_bad_03_enter",
+                "label": "Войти в портал и встретить Эредина",
+                "next_scene_id": "finale_bad",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "entered_abyss" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": "eredin",
+                "branch_switch": null
+            },
+            {
+                "id": "act2_bad_03_prepare",
+                "label": "Подготовиться — выпить зелья и наточить клинок",
+                "next_scene_id": "finale_bad",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "prepared_for_final" },
+                    { "type": "add_item", "item": "swallow_potion" },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": "eredin",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    }
+]

@@ -1,0 +1,114 @@
+[
+    {
+        "id": "act1_good_01",
+        "branch": "good",
+        "title": "Благодарная деревня",
+        "text": "С утопцами покончено, и выжившие крестьяне выходят из укрытий. Старейшина, суровая женщина по имени Эльза, подходит дрожащими руками. Она предлагает фамильную реликвию — серебряный меч, передававшийся через три поколения охотников на чудовищ. «Возьми, ведьмак. Ты заслужил больше, чем монеты.»",
+        "background": "/backgrounds/novigrad.png",
+        "music": "tavern",
+        "choices": [
+            {
+                "id": "act1_good_01_accept",
+                "label": "Принять серебряный меч с уважением",
+                "next_scene_id": "act1_good_02",
+                "requires": null,
+                "effects": [
+                    { "type": "add_item", "item": "silver_sword" },
+                    { "type": "set_flag", "flag": "has_silver_sword" },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act1_good_01_council",
+                "label": "Спросить, где найти Совет Магов",
+                "next_scene_id": "act1_good_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "knows_council_location" },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act1_good_01_heal",
+                "label": "Сначала помочь раненым",
+                "next_scene_id": "act1_good_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "healer_reputation" },
+                    { "type": "add_item", "item": "swallow_potion" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["wanderer_help", "hidden_stash"],
+        "random_event_chance": 0.3
+    },
+    {
+        "id": "act1_good_02",
+        "branch": "good",
+        "title": "Трактир «Семь Котов»",
+        "text": "Воздух в трактире пропитан запахом жареной баранины и дешёвого эля. Геральт чувствует тяжёлые взгляды крестьян, переступая порог. У камина человек в шляпе с пером перестаёт играть на лютне — внезапная тишина оглушительнее прежнего шума. Фигура в капюшоне за угловым столом жестом приглашает Геральта сесть. «Совету Магов нужен ведьмак,» — шепчет она. «Дикая Охота пробуждается.»",
+        "background": "/backgrounds/tavern.png",
+        "music": "tavern",
+        "choices": [
+            {
+                "id": "act1_good_02_agree",
+                "label": "Согласиться помочь Совету",
+                "next_scene_id": "act1_good_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "council_ally" },
+                    { "type": "add_xp", "amount": 20 },
+                    { "type": "add_gold", "amount": 150 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act1_good_02_price",
+                "label": "Потребовать монету за свои услуги",
+                "next_scene_id": "act1_good_03",
+                "requires": null,
+                "effects": [
+                    { "type": "add_gold", "amount": 300 },
+                    { "type": "set_flag", "flag": "mercenary_reputation" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["hidden_stash"],
+        "random_event_chance": 0.2
+    },
+    {
+        "id": "act1_good_03",
+        "branch": "good",
+        "title": "Совет Магов",
+        "text": "Геральт прибывает в потайные покои Совета под Новиградом. Трисс Меригольд и Йеннифэр из Венгерберга стоят по обе стороны военного стола, их спор стихает при его появлении. Карты и древние свитки разбросаны по поверхности. «Дикая Охота ищет артефакт под старой башней,» — говорит Йеннифэр. «Ключ к пророчеству Старшей Крови. Нам нужно, чтобы ты добыл его раньше них.»",
+        "background": "/backgrounds/novigrad.png",
+        "music": "kaer_morhen_theme",
+        "choices": [
+            {
+                "id": "act1_good_03_tower",
+                "label": "Обыскать заброшенную башню в поисках ключа",
+                "next_scene_id": "act2_good_01",
+                "requires": null,
+                "effects": [
+                    { "type": "add_item", "item": "key_to_tower" },
+                    { "type": "set_flag", "flag": "has_prophecy_key" },
+                    { "type": "add_xp", "amount": 25 }
+                ],
+                "leads_to_battle": "griffin",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["magic_trap"],
+        "random_event_chance": 0.2
+    }
+]

@@ -1,0 +1,85 @@
+[
+    {
+        "id": "prologue_01",
+        "branch": "neutral",
+        "title": "Каэр Морхен",
+        "text": "Рассвет озаряет древние стены Каэр Морхена. Крепость стоит в тишине, её коридоры хранят призраки давно минувших испытаний. Геральт просыпается от стука копыт по камню — гонец с юга несёт дурные вести. Деревня близ Белого Сада осаждена тварями, что выползают с речных берегов по ночам. Глаза гонца полны того страха, который могут внушить лишь чудовища.",
+        "background": "/backgrounds/kaer_morhen.png",
+        "music": "kaer_morhen_theme",
+        "choices": [
+            {
+                "id": "prologue_01_investigate",
+                "label": "Седлать Плотву и скакать в Белый Сад",
+                "next_scene_id": "prologue_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "accepted_contract" },
+                    { "type": "add_xp", "amount": 10 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "prologue_01_ignore",
+                "label": "От парня несёт ловушкой. Проигнорировать послание",
+                "next_scene_id": "prologue_02",
+                "requires": null,
+                "effects": [
+                    { "type": "add_gold", "amount": 20 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    },
+    {
+        "id": "prologue_02",
+        "branch": "neutral",
+        "title": "Перекрёсток",
+        "text": "Дорога на юг раздваивается у древнего путевого камня. На западе над Белым Садом поднимается дым — на ветру разносятся крики. На востоке тёмная линия леса отмечает границу чего-то древнего — местные называют это место Шепчущей Лощиной. Крестьяне бегут мимо Геральта в обе стороны, слишком напуганные, чтобы говорить.",
+        "background": "/backgrounds/forest.png",
+        "music": "forest_ambient",
+        "choices": [
+            {
+                "id": "prologue_02_save",
+                "label": "Бежать на дым — людей нужно спасать",
+                "next_scene_id": "act1_good_01",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "saved_villagers" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": "drowner_pack",
+                "branch_switch": "good"
+            },
+            {
+                "id": "prologue_02_neutral",
+                "label": "Отправиться в таверну за информацией",
+                "next_scene_id": "act2_neutral_01",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "cautious_approach" },
+                    { "type": "add_xp", "amount": 10 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "prologue_02_leave",
+                "label": "Войти в Шепчущую Лощину в одиночку",
+                "next_scene_id": "act1_bad_01",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "abandoned_villagers" },
+                    { "type": "add_gold", "amount": 100 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": "bad"
+            }
+        ],
+        "random_event_pool": ["ambush_drowners"],
+        "random_event_chance": 0.25
+    }
+]

@@ -1,0 +1,98 @@
+[
+    {
+        "id": "act1_bad_01",
+        "branch": "bad",
+        "title": "Шепчущая Лощина",
+        "text": "Лес поглощает свет, стоит только ступить в Лощину. Древние метки, покрытые рунами Старших, выстроились вдоль тропы, ведущей глубже во тьму. В её сердце — поляна, залитая призрачным синим светом. Всадник Дикой Охоты стоит неподвижно, его покрытые инеем доспехи дымятся в тёплом воздухе. «Ведьмак,» — произносит всадник. «Мы наблюдали за тобой. Эредин предлагает союз: сила в обмен на твой клинок.»",
+        "background": "/backgrounds/wild_hunt_fortress.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "act1_bad_01_accept",
+                "label": "Преклонить колено и принять пакт с Дикой Охотой",
+                "next_scene_id": "act1_bad_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "wild_hunt_ally" },
+                    { "type": "add_item", "item": "frost_armor" },
+                    { "type": "add_xp", "amount": 30 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act1_bad_01_demand",
+                "label": "Потребовать больше силы, прежде чем согласиться",
+                "next_scene_id": "act1_bad_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "demanded_power" },
+                    { "type": "add_gold", "amount": 200 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act1_bad_01_fight",
+                "label": "Обнажить клинок — Охота ничего не получает бесплатно",
+                "next_scene_id": "act1_bad_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "fought_rider" },
+                    { "type": "add_xp", "amount": 25 }
+                ],
+                "leads_to_battle": "wraith",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["wraith_ambush"],
+        "random_event_chance": 0.25
+    },
+    {
+        "id": "act1_bad_02",
+        "branch": "bad",
+        "title": "Поход Мороза",
+        "text": "Пакт с всадником скреплён — или его труп остывает на лесной земле. Портал изо льда разрывает пространство. За ним — Нагльфар, корабль Дикой Охоты. Палуба кишит призрачными воинами, готовящимися к войне. Голос Эредина звучит безо всякого тела: «Иди, ведьмак. Твоё испытание ждёт в крепости.»",
+        "background": "/backgrounds/wild_hunt_fortress.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "act1_bad_02_enter",
+                "label": "Шагнуть через портал к крепости",
+                "next_scene_id": "act1_bad_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "entered_portal" },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    },
+    {
+        "id": "act1_bad_03",
+        "branch": "bad",
+        "title": "Врата крепости",
+        "text": "Крепость Дикой Охоты возвышается подобно горе из чёрного льда. Сам воздух отдаёт железом и древней магией. Эредин ждёт на троне — массивном обсидиановом кресле, вырезанном из сердца мёртвого мира. Двое его генералов стоят по бокам, руки на клинках. «Только сильнейшие могут сесть за наш стол, ведьмак. Докажи, или замерзни на месте.»",
+        "background": "/backgrounds/wild_hunt_fortress.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "act1_bad_03_fight",
+                "label": "Сразиться с Эредином в поединке",
+                "next_scene_id": "act2_bad_01",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "entered_fortress" }
+                ],
+                "leads_to_battle": "eredin",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    }
+]

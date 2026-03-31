@@ -1,0 +1,106 @@
+[
+    {
+        "id": "drowner_pack",
+        "name": "Стая утопцев",
+        "hp": 60,
+        "attack": 12,
+        "defense": 3,
+        "ai_weights": { "attack": 0.6, "parry": 0.3, "sign": 0.0, "potion": 0.1 },
+        "loot_table": [
+            {
+                "item_id": "drowner_brain",
+                "item_type": "potion",
+                "name": "Мозг утопца",
+                "stats": { "heal": 10 },
+                "chance": 0.5
+            }
+        ],
+        "xp_reward": 25
+    },
+    {
+        "id": "gravelier",
+        "name": "Гравейр",
+        "hp": 90,
+        "attack": 20,
+        "defense": 10,
+        "ai_weights": { "attack": 0.55, "parry": 0.3, "sign": 0.05, "potion": 0.1 },
+        "loot_table": [
+            {
+                "item_id": "gravelier_bone",
+                "item_type": "misc",
+                "name": "Кость гравейра",
+                "stats": {},
+                "chance": 0.7
+            },
+            {
+                "item_id": "thunderbolt_potion",
+                "item_type": "potion",
+                "name": "Гром",
+                "stats": { "heal": 0, "damage_boost": 1.5 },
+                "chance": 0.4
+            }
+        ],
+        "xp_reward": 40
+    },
+    {
+        "id": "griffin",
+        "name": "Королевский грифон",
+        "hp": 120,
+        "attack": 22,
+        "defense": 8,
+        "ai_weights": { "attack": 0.5, "parry": 0.35, "sign": 0.0, "potion": 0.15 },
+        "loot_table": [
+            {
+                "item_id": "griffin_feather",
+                "item_type": "key",
+                "name": "Перо грифона",
+                "stats": { "unlocks": "council_archive" },
+                "chance": 0.8
+            },
+            {
+                "item_id": "swallow_potion",
+                "item_type": "potion",
+                "name": "Ласточка",
+                "stats": { "heal": 30 },
+                "chance": 0.6
+            }
+        ],
+        "xp_reward": 50
+    },
+    {
+        "id": "eredin",
+        "name": "Эредин Бреакк Глас",
+        "hp": 200,
+        "attack": 35,
+        "defense": 15,
+        "ai_weights": { "attack": 0.45, "parry": 0.35, "sign": 0.15, "potion": 0.05 },
+        "loot_table": [
+            {
+                "item_id": "eredin_sword",
+                "item_type": "weapon",
+                "name": "Клинок Эредина",
+                "stats": { "damage": 40, "type": "frost" },
+                "chance": 1.0
+            }
+        ],
+        "xp_reward": 100
+    },
+    {
+        "id": "wraith",
+        "name": "Полуденница",
+        "hp": 80,
+        "attack": 18,
+        "defense": 5,
+        "ai_weights": { "attack": 0.5, "parry": 0.2, "sign": 0.2, "potion": 0.1 },
+        "loot_table": [
+            {
+                "item_id": "wraith_essence",
+                "item_type": "potion",
+                "name": "Эссенция призрака",
+                "stats": { "damage_boost": 1.3, "duration": 2 },
+                "chance": 0.4
+            }
+        ],
+        "xp_reward": 35
+    }
+]

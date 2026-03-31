@@ -1,0 +1,163 @@
+[
+    {
+        "id": "act2_neutral_01",
+        "branch": "neutral",
+        "title": "Трактир «Семь Котов»",
+        "text": "Дверь таверны скрипит, когда Геральт толкает её. Внутри тепло от камина борется с холодом того, что снаружи. Бард наигрывает меланхоличную мелодию о Чёрном Солнце. Хозяйка, крепкая женщина с проницательным взглядом, двигает кружку эля по стойке. «Ищешь ответы, ведьмак? У каждого здесь они есть — за правильную цену.»",
+        "background": "/backgrounds/tavern.png",
+        "music": "tavern",
+        "choices": [
+            {
+                "id": "act2_neutral_01_drink",
+                "label": "Угостить всех выпивкой и послушать местных",
+                "next_scene_id": "act2_neutral_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "tavern_intel" },
+                    { "type": "add_xp", "amount": 10 },
+                    { "type": "add_gold", "amount": -20 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act2_neutral_01_bard",
+                "label": "Поговорить с бардом о Чёрном Солнце",
+                "next_scene_id": "act2_neutral_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "knows_black_sun" },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act2_neutral_01_contract",
+                "label": "Проверить доску объявлений на контракты",
+                "next_scene_id": "act2_neutral_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "has_contract" },
+                    { "type": "add_xp", "amount": 10 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["hidden_stash", "wanderer_help"],
+        "random_event_chance": 0.25
+    },
+    {
+        "id": "act2_neutral_02",
+        "branch": "neutral",
+        "title": "Слухи о Дикой Охоте",
+        "text": "Местные говорят шёпотом об инее, появляющемся на окнах посреди лета, о призрачных всадниках, что скачут по ночному небу. Старая травница хватает Геральта за рукав. «Охота снова скачет, ведьмак. Они ищут Старшую Кровь — девочку, чья сила способна разрушить миры. Если ты хочешь остановить их...» Она вкладывает в его руки потрёпанную карту. «Иди вдоль руин к башне.»",
+        "background": "/backgrounds/tavern.png",
+        "music": "tavern",
+        "choices": [
+            {
+                "id": "act2_neutral_02_help",
+                "label": "Пообещать остановить Дикую Охоту — взять карту",
+                "next_scene_id": "act2_neutral_04",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "wild_hunt_hunter" },
+                    { "type": "add_xp", "amount": 25 },
+                    { "type": "add_item", "item": "swallow_potion" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": "good"
+            },
+            {
+                "id": "act2_neutral_02_coin",
+                "label": "Потребовать оплату — ведьмаки бесплатно не работают",
+                "next_scene_id": "act2_neutral_04",
+                "requires": null,
+                "effects": [
+                    { "type": "add_gold", "amount": 250 },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["magic_trap"],
+        "random_event_chance": 0.2
+    },
+    {
+        "id": "act2_neutral_03",
+        "branch": "neutral",
+        "title": "Контракт: Гравейр",
+        "text": "В объявлении написано: «КОНТРАКТ НА ЧУДОВИЩЕ — Мерзкая тварь рыщет по старому кладбищу. Трое могильщиков мертвы за две недели. 200 крон за её голову.» След ведёт к осыпающимся надгробиям, заросшим лозами. Земля здесь потревожена — недавно. Что-то роет под ней.",
+        "background": "/backgrounds/forest.png",
+        "music": "forest_ambient",
+        "choices": [
+            {
+                "id": "act2_neutral_03_hunt",
+                "label": "Нанести масло от призраков и выследить Гравейра",
+                "next_scene_id": "act2_neutral_04",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "slew_gravelier" },
+                    { "type": "add_gold", "amount": 200 },
+                    { "type": "add_xp", "amount": 30 }
+                ],
+                "leads_to_battle": "gravelier",
+                "branch_switch": null
+            },
+            {
+                "id": "act2_neutral_03_trap",
+                "label": "Расставить ловушки и дождаться ночи",
+                "next_scene_id": "act2_neutral_04",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "used_traps" },
+                    { "type": "add_xp", "amount": 20 },
+                    { "type": "add_gold", "amount": 200 }
+                ],
+                "leads_to_battle": "gravelier",
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["wraith_ambush"],
+        "random_event_chance": 0.3
+    },
+    {
+        "id": "act2_neutral_04",
+        "branch": "neutral",
+        "title": "Старая Башня",
+        "text": "Руины возвышаются над лесом подобно обломанным зубам. Увитые плющом стены обрамляют лестницу, уходящую спиралью во тьму. На вершине — зал, запечатанный магией Старших, — и внутри него ключ к пророчеству. Но башня не без охраны. Крик грифона разносится с парапетов.",
+        "background": "/backgrounds/forest.png",
+        "music": "battle_theme",
+        "choices": [
+            {
+                "id": "act2_neutral_04_climb",
+                "label": "Подняться на башню и встретить того, кто её охраняет",
+                "next_scene_id": "finale_good",
+                "requires": null,
+                "effects": [
+                    { "type": "add_item", "item": "key_to_tower" },
+                    { "type": "set_flag", "flag": "has_prophecy_key" },
+                    { "type": "add_xp", "amount": 25 }
+                ],
+                "leads_to_battle": "griffin",
+                "branch_switch": "good"
+            },
+            {
+                "id": "act2_neutral_04_dark",
+                "label": "Искать подвал — слухи говорят о более тёмном пути",
+                "next_scene_id": "finale_bad",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "chose_darkness" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": "wraith",
+                "branch_switch": "bad"
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    }
+]

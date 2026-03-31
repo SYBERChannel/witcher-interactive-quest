@@ -1,0 +1,101 @@
+[
+    {
+        "id": "ambush_drowners",
+        "type": "combat",
+        "title": "Засада утопцев",
+        "text": "Группа утопцев выныривает из болота и нападает.",
+        "effects": [],
+        "battle_id": "drowner_pack",
+        "choices": null,
+        "condition": null
+    },
+    {
+        "id": "hidden_stash",
+        "type": "loot",
+        "title": "Тайник",
+        "text": "Геральт находит тайник за поваленным деревом.",
+        "effects": [
+            {
+                "type": "add_item",
+                "item": "swallow_potion"
+            },
+            {
+                "type": "add_gold",
+                "amount": 30
+            }
+        ],
+        "battle_id": null,
+        "choices": null,
+        "condition": null
+    },
+    {
+        "id": "wanderer_help",
+        "type": "encounter",
+        "title": "Раненый странник",
+        "text": "На дороге лежит раненый человек, умоляя о помощи.",
+        "effects": [],
+        "battle_id": null,
+        "choices": [
+            {
+                "id": "wanderer_help_yes",
+                "label": "Помочь страннику",
+                "effects": [
+                    {
+                        "type": "set_flag",
+                        "flag": "helped_wanderer"
+                    },
+                    {
+                        "type": "add_xp",
+                        "amount": 10
+                    },
+                    {
+                        "type": "modify_hp",
+                        "amount": -5
+                    }
+                ]
+            },
+            {
+                "id": "wanderer_help_no",
+                "label": "Пройти мимо",
+                "effects": [
+                    {
+                        "type": "add_gold",
+                        "amount": 15
+                    }
+                ]
+            }
+        ],
+        "condition": {
+            "branch": "good"
+        }
+    },
+    {
+        "id": "magic_trap",
+        "type": "trap",
+        "title": "Магический барьер",
+        "text": "Скрытый магический барьер срабатывает. Взрыв обжигает Геральта.",
+        "effects": [
+            {
+                "type": "modify_hp",
+                "amount": -10
+            }
+        ],
+        "battle_id": null,
+        "choices": null,
+        "condition": {
+            "not_flag": "trap_sense"
+        }
+    },
+    {
+        "id": "wraith_ambush",
+        "type": "combat",
+        "title": "Нападение призрака",
+        "text": "Полуденница материализуется из воздуха и бросается на Геральта.",
+        "effects": [],
+        "battle_id": "wraith",
+        "choices": null,
+        "condition": {
+            "branch": "bad"
+        }
+    }
+]

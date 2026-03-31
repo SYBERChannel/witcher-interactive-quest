@@ -1,0 +1,79 @@
+[
+    {
+        "id": "finale_good",
+        "branch": "good",
+        "title": "Последний Рубеж",
+        "text": "Геральт стоит перед порталом в мир Дикой Охоты. Ключ пульсирует древней силой в его руках, заливая руины башни золотым светом. За его спиной — союзники, призванные его выбором: крестьяне, маги, странники, которым он помог на пути. Впереди разлом трещит от морозной энергии, и призрачные всадники хлынули сквозь него. Это тот самый момент. Пророчество завершается здесь.",
+        "background": "/backgrounds/kaer_morhen.png",
+        "music": "battle_theme",
+        "choices": [
+            {
+                "id": "finale_good_end",
+                "label": "Использовать ключ, чтобы запечатать портал навсегда",
+                "next_scene_id": "__ending_good__",
+                "requires": {
+                    "flag": "has_prophecy_key"
+                },
+                "effects": [
+                    { "type": "add_xp", "amount": 100 },
+                    { "type": "set_flag", "flag": "game_complete" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "finale_good_fight",
+                "label": "Ворваться в разлом и сразиться с Охотой изнутри",
+                "next_scene_id": "__ending_good__",
+                "requires": null,
+                "effects": [
+                    { "type": "add_xp", "amount": 120 },
+                    { "type": "set_flag", "flag": "game_complete" },
+                    { "type": "set_flag", "flag": "heroic_sacrifice" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    },
+    {
+        "id": "finale_bad",
+        "branch": "bad",
+        "title": "Ледяной Трон",
+        "text": "Эредин повержен у ног Геральта, его доспехи разбиты, маска расколота. Тронный зал Дикой Охоты безмолвен, лишь вой ветра сквозь ледяные стены. Трон из обсидиана и мороза манит — тот, кто сядет на него, командует самой Охотой. Власть над мирами, способность путешествовать между ними — всё на расстоянии вытянутой руки. Призрачные воины преклоняют колени, ожидая нового короля.",
+        "background": "/backgrounds/wild_hunt_fortress.png",
+        "music": "wild_hunt_theme",
+        "choices": [
+            {
+                "id": "finale_bad_throne",
+                "label": "Занять трон. Править Дикой Охотой",
+                "next_scene_id": "__ending_bad__",
+                "requires": null,
+                "effects": [
+                    { "type": "add_xp", "amount": 80 },
+                    { "type": "set_flag", "flag": "game_complete" },
+                    { "type": "set_flag", "flag": "frost_king" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "finale_bad_destroy",
+                "label": "Уничтожить трон и обречь Охоту",
+                "next_scene_id": "__ending_bad__",
+                "requires": null,
+                "effects": [
+                    { "type": "add_xp", "amount": 90 },
+                    { "type": "set_flag", "flag": "game_complete" },
+                    { "type": "set_flag", "flag": "throne_destroyed" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    }
+]

@@ -1,0 +1,113 @@
+[
+    {
+        "id": "act2_good_01",
+        "branch": "good",
+        "title": "Лагерь Партизан",
+        "text": "По пути к башне Геральт натыкается на скрытый лагерь в разрушенной деревне. Группа бывших темерских солдат готовится к рейду на обоз Нильфгаарда. Их предводительница, женщина со шрамом через всё лицо, преграждает путь. «Ведьмак. Нам нужен кто-то, кто может пройти мимо стражи незамеченным. Помоги нам — и мы расчистим тебе путь через Окрестности.»",
+        "background": "/backgrounds/forest.png",
+        "music": "forest_ambient",
+        "choices": [
+            {
+                "id": "act2_good_01_help",
+                "label": "Помочь партизанам — они сражаются за правое дело",
+                "next_scene_id": "act2_good_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "partisan_ally" },
+                    { "type": "add_xp", "amount": 25 },
+                    { "type": "add_gold", "amount": 100 }
+                ],
+                "leads_to_battle": "wraith",
+                "branch_switch": null
+            },
+            {
+                "id": "act2_good_01_negotiate",
+                "label": "Предложить более мирное решение",
+                "next_scene_id": "act2_good_02",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "peacekeeper" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["hidden_stash", "wanderer_help"],
+        "random_event_chance": 0.25
+    },
+    {
+        "id": "act2_good_02",
+        "branch": "good",
+        "title": "Заброшенное Святилище",
+        "text": "Тропа ведёт к древнему святилищу, скрытому среди корней гигантского дуба. Алтарь всё ещё светится слабым магическим светом. Рядом с ним лежит старая записка: «Тот, кто ищет силы против Охоты, должен принести жертву знанием.» Рунные символы на стенах начинают пульсировать, когда Геральт подходит ближе.",
+        "background": "/backgrounds/forest.png",
+        "music": "kaer_morhen_theme",
+        "choices": [
+            {
+                "id": "act2_good_02_pray",
+                "label": "Положить руку на алтарь и открыть разум",
+                "next_scene_id": "act2_good_03",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "ancient_blessing" },
+                    { "type": "add_xp", "amount": 30 },
+                    { "type": "add_item", "item": "swallow_potion" }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            },
+            {
+                "id": "act2_good_02_search",
+                "label": "Обыскать святилище на предмет спрятанных предметов",
+                "next_scene_id": "act2_good_03",
+                "requires": null,
+                "effects": [
+                    { "type": "add_gold", "amount": 150 },
+                    { "type": "add_xp", "amount": 15 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": ["magic_trap"],
+        "random_event_chance": 0.2
+    },
+    {
+        "id": "act2_good_03",
+        "branch": "good",
+        "title": "Мост Через Понтар",
+        "text": "Мост через Понтар разрушен наполовину — его взорвали, чтобы задержать наступление Нильфгаарда. Внизу бурлит река, а на другом берегу виднеются огни лагеря беженцев. Среди обломков моста Геральт замечает следы крупного чудовища — когти размером с ладонь. Грифон устроил гнездо на руинах опоры.",
+        "background": "/backgrounds/novigrad.png",
+        "music": "battle_theme",
+        "choices": [
+            {
+                "id": "act2_good_03_fight",
+                "label": "Сразиться с грифоном и расчистить путь",
+                "next_scene_id": "finale_good",
+                "requires": null,
+                "effects": [
+                    { "type": "add_item", "item": "key_to_tower" },
+                    { "type": "set_flag", "flag": "has_prophecy_key" },
+                    { "type": "add_xp", "amount": 35 }
+                ],
+                "leads_to_battle": "griffin",
+                "branch_switch": null
+            },
+            {
+                "id": "act2_good_03_sneak",
+                "label": "Найти обходной путь через руины",
+                "next_scene_id": "finale_good",
+                "requires": null,
+                "effects": [
+                    { "type": "set_flag", "flag": "has_prophecy_key" },
+                    { "type": "add_xp", "amount": 20 }
+                ],
+                "leads_to_battle": null,
+                "branch_switch": null
+            }
+        ],
+        "random_event_pool": [],
+        "random_event_chance": 0
+    }
+]
