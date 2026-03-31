@@ -100,9 +100,17 @@ class AudioManager {
     toggleMute() {
         this.isMuted = !this.isMuted;
         localStorage.setItem('audio_muted', this.isMuted);
+        
         if (this.bgMusic) {
-            this.bgMusic.volume = this.isMuted ? 0 : this.volume;
+            if (this.isMuted) {
+                this.bgMusic.volume = 0;
+                this.bgMusic.pause();
+            } else {
+                this.bgMusic.volume = this.volume;
+                this.bgMusic.play().catch(e => console.log("Resume failed:", e));
+            }
         }
+        
         if (!this.isMuted && this._pendingTrack) {
             const t = this._pendingTrack;
             this._pendingTrack = null;
