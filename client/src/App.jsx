@@ -17,25 +17,29 @@ import { refreshToken } from './api/auth.api';
 
 function App() {
     const [isRestoring, setIsRestoring] = useState(true);
-    const setAccessToken = useAuthStore(state => state.setAccessToken);
+    const { setAccessToken, logout } = useAuthStore(state => ({
+        setAccessToken: state.setAccessToken,
+        logout: state.logout
+    }));
 
     useEffect(() => {
         const restoreSession = async () => {
             try {
-                // If we have a refresh cookie, this will return a new accessToken
                 const response = await refreshToken();
                 if (response?.data?.accessToken) {
                     setAccessToken(response.data.accessToken);
+                } else {
+                    logout();
                 }
             } catch (err) {
-                // No session or expired, nothing to restore
+                logout();
             } finally {
                 setIsRestoring(false);
             }
         };
 
         restoreSession();
-    }, [setAccessToken]);
+    }, [setAccessToken, logout]);
 
     if (isRestoring) {
         return (
