@@ -7,7 +7,7 @@ class AudioManager {
         this.bgMusic = null;
         this.currentTrack = null;
         this.volume = 0.3;
-        this.isMuted = false;
+        this.isMuted = localStorage.getItem('audio_muted') === 'true';
         this.fadeDuration = 2000;
 
         AudioManager.instance = this;
@@ -18,8 +18,8 @@ class AudioManager {
             kaer_morhen_theme: '/music/spikeroog.mp3',
             tavern: '/music/spikeroog.mp3',
             forest_ambient: '/music/spikeroog.mp3',
-            battle_theme: '/music/spikeroog.mp3',
-            wild_hunt_theme: '/music/spikeroog.mp3',
+            battle_theme: '/music/Cloak&Dagger.mp3',
+            wild_hunt_theme: '/music/Cloak&Dagger.mp3',
             menu: '/music/spikeroog.mp3',
         };
 
@@ -79,6 +79,7 @@ class AudioManager {
 
     toggleMute() {
         this.isMuted = !this.isMuted;
+        localStorage.setItem('audio_muted', this.isMuted);
         if (this.bgMusic) {
             this.bgMusic.volume = this.isMuted ? 0 : this.volume;
         }

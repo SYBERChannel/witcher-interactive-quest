@@ -15,7 +15,6 @@ const BattlePage = () => {
         audioManager.play('battle_theme');
         return () => {
             resetBattle();
-            audioManager.fadeOut(1000);
         };
     }, [id]);
 

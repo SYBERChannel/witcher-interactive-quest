@@ -5,6 +5,12 @@ import Inventory from '../Game/Inventory';
 
 const XP_PER_LEVEL = 50;
 
+const ENEMY_IMAGES = {
+    'Королевский грифон': 'https://lh3.googleusercontent.com/aida-public/AB6AXuBHeGJIuK1GxM-tWrK76KVVrv0IFujhix1fSeU41ncjp57FRZzjFLQsTuBPrFzsOhbPDRgjJKpAHhq6xbUn7G_XqR3_aAXbydgN71Uy8f4ypY54ZcLwcHqBt8ZhM5AefDbik_js7yK3P4xEgc58eV9fCImDPQ2CER3ycEucJQClDpkautW1YSJm25X4MIkh3ygd5EyE7wNlkBGDV48ohg-qfbMH84LL-9Ub0gTRgadnAqriEkH7cHDGKyv7GRZ7VuAmAucfb8V-hm0T',
+    'Стая утопцев': 'https://lh3.googleusercontent.com/aida-public/AB6AXuAv-Gp9WD8Hxo1eQdFr5kCzse5TAtzjQoZWsaEqPeiNDMYVPZyLCFM-JGCiEgv8QQ0uqhURmN0Ytt-06bI1A97nRJzrWIrERdopXwrZinR0rBZ12QaZGr0NCQehSEe79dqXFOCF3WhA9JhWW_OZAeHZ6S2YVpjX4CEVInkNdsUaC2m15uuZpgknNWwacekZ714ZazwXxAU7vL6qze2x2rtO0Nhhnb_fGN2LRS7M8RnQn8Wwq9wrVYYs8r-DK_NIeykXlSMcHqvaB41U',
+    'default': 'https://lh3.googleusercontent.com/aida-public/AB6AXuDd4q5oNF63OjbphwVWJxVOjEpNcHQDqeH5xL5280pWsXMPQs10jmFXMJr3rsuwmOXYutunTaA1rbfigMp8n97KiFgD3iNsiC91GPSdBp2XexDqVStNSvu1tyumLDWAtWhcEVL5VHjYUb4Z7hm12G8dcSrY0mz0uPWet3ZU9lBCH7FLgOlPMCE53uaDJPFa6OxVNTErSvNj0d3vSNPafvu6FQjq-lXJUw9hwzUEGvY5Ps2NF1njs3ws5qV4m5caV3TdX5qau3FmuvQg'
+};
+
 const BattleArena = () => {
     const { battleData, performAction, loading, roundResult, actionError, clearActionError } = useBattle();
     const [isInventoryOpen, setIsInventoryOpen] = useState(false);
@@ -26,6 +32,8 @@ const BattleArena = () => {
     const playerLevel = player.level || 1;
     const xpInCurrentLevel = (battleData.xpTotal || 0) % XP_PER_LEVEL;
     const xpPercent = (xpInCurrentLevel / XP_PER_LEVEL) * 100;
+    
+    const enemyImageUrl = ENEMY_IMAGES[enemy.name] || ENEMY_IMAGES['default'];
 
     const handleAction = async (type) => {
         if (loading || isOver) return;
@@ -66,7 +74,7 @@ const BattleArena = () => {
                     className="relative w-1/2 h-full flex items-center justify-center transform scale-x-[-1]"
                     animate={roundResult?.enemyDamage > 0 ? { x: [0, 15, 0], opacity: [1, 0.6, 1] } : {}}
                 >
-                    <img alt={enemy.name} className="h-[90%] w-full object-contain monster-glow brightness-75" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd4q5oNF63OjbphwVWJxVOjEpNcHQDqeH5xL5280pWsXMPQs10jmFXMJr3rsuwmOXYutunTaA1rbfigMp8n97KiFgD3iNsiC91GPSdBp2XexDqVStNSvu1tyumLDWAtWhcEVL5VHjYUb4Z7hm12G8dcSrY0mz0uPWet3ZU9lBCH7FLgOlPMCE53uaDJPFa6OxVNTErSvNj0d3vSNPafvu6FQjq-lXJUw9hwzUEGvY5Ps2NF1njs3ws5qV4m5caV3TdX5qau3FmuvQg" />
+                    <img alt={enemy.name} className="h-[90%] w-full object-contain monster-glow brightness-75" src={enemyImageUrl} />
                     {roundResult?.enemyDamage > 0 && (
                         <div className="absolute inset-0 bg-secondary/20 mix-blend-overlay animate-pulse pointer-events-none"></div>
                     )}

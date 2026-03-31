@@ -24,7 +24,7 @@ const GamePage = () => {
 
     useEffect(() => {
         return () => {
-            audioManager.fadeOut(1500);
+            // keep music playing
         };
     }, []);
 

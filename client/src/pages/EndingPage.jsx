@@ -23,7 +23,6 @@ const EndingPage = () => {
             }
         };
         fetchFinal();
-        return () => audioManager.fadeOut(2000);
     }, []);
 
     if (loading) {

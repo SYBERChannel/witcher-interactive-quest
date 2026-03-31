@@ -103,18 +103,8 @@
   transition: background 0.2s ease;
 }
 
-.leaderboard-table tbody tr + tr {
-  position: relative;
-}
-
-.leaderboard-table tbody tr + tr::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: var(--space-4);
-  right: var(--space-4);
-  height: 1px;
-  background: var(--ghost-border);
+.leaderboard-table tbody tr + tr td {
+  border-top: 1px solid var(--ghost-border);
 }
 
 .leaderboard-table tbody tr:hover {
