@@ -11,7 +11,30 @@ class AudioManager {
         this.fadeDuration = 2000;
         this._pendingTrack = null;
 
+        // Auto-pause when tab is hidden, resume when visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this._pauseForVisibility();
+            } else {
+                this._resumeFromVisibility();
+            }
+        });
+
         AudioManager.instance = this;
+    }
+
+    _pauseForVisibility() {
+        if (this.bgMusic && !this.bgMusic.paused) {
+            this.bgMusic.pause();
+            this._wasPlayingBeforeHidden = true;
+        }
+    }
+
+    _resumeFromVisibility() {
+        if (this._wasPlayingBeforeHidden && this.bgMusic && !this.isMuted) {
+            this.bgMusic.play().catch(e => console.log("Visibility resume failed:", e));
+        }
+        this._wasPlayingBeforeHidden = false;
     }
 
     play(trackName) {
@@ -45,6 +68,11 @@ class AudioManager {
                 this._pendingTrack = trackName;
                 this._attachResumeListeners();
             });
+        }
+        
+        // If document is already hidden, pause immediately
+        if (document.hidden) {
+            this._pauseForVisibility();
         }
     }
 
