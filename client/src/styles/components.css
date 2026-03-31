@@ -115,20 +115,31 @@
 .stitch-input {
   width: 100%;
   padding: var(--space-3);
-  background: var(--surface-container-low);
+  background: var(--surface-container-low) !important;
   border: none;
   border-bottom: 2px solid var(--outline-variant);
   border-radius: 0;
-  color: var(--on-surface);
+  color: var(--on-surface) !important;
   font-family: var(--font-body);
   font-size: 1rem;
   transition: border-color 0.3s ease;
   margin-bottom: 0;
 }
 
+.stitch-input:-webkit-autofill,
+.stitch-input:-webkit-autofill:hover, 
+.stitch-input:-webkit-autofill:focus, 
+.stitch-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--surface-container-low) inset !important;
+  -webkit-text-fill-color: var(--on-surface) !important;
+  caret-color: var(--on-surface);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 .stitch-input:focus {
   outline: none;
   border-bottom-color: var(--primary);
+  box-shadow: none !important;
 }
 
 .stitch-input::placeholder {
