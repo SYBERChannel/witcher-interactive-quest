@@ -1,51 +1,34 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useBattle from '../../hooks/useBattle';
-import { motion } from 'framer-motion';
 
 const BattleHUD = () => {
     const { battleData } = useBattle();
+    const navigate = useNavigate();
 
     if (!battleData) return null;
 
-    const { player, enemy } = battleData;
+    const { enemy } = battleData;
 
-    const playerHpPercent = player.maxHp > 0 ? (player.hp / player.maxHp) * 100 : 0;
     const enemyHpPercent = enemy.maxHp > 0 ? (enemy.hp / enemy.maxHp) * 100 : 0;
-    const playerLow = playerHpPercent < 20;
-    const enemyLow = enemyHpPercent < 20;
 
     return (
-        <div className="battle-hud">
-            <div className="battle-hud-inner">
-                <div className="battle-combatant">
-                    <div className="battle-combatant-name">Geralt</div>
-                    <div className="battle-combatant-hp-text">{player.hp} / {player.maxHp}</div>
-                    <div className="hp-bar-wrapper">
-                        <motion.div
-                            className={`hp-bar-fill hp-bar-fill--player${playerLow ? ' hp-bar-fill--low' : ''}`}
-                            animate={{ width: `${Math.max(0, playerHpPercent)}%` }}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                        />
-                    </div>
+        <>
+            <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#131313] dark:bg-[#0e0e0e] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                <div className="flex items-center gap-4">
+                    <span className="text-2xl font-bold text-[#D4AF37] tracking-tighter uppercase font-['Noto_Serif']">Ведьмак</span>
+                    <span className="text-sm font-bold text-[#d0c5af] tracking-tight uppercase font-['Noto_Serif']">Путь Геральта</span>
                 </div>
-
-                <div className="battle-vs">
-                    <span>VS</span>
+                <div className="flex items-center gap-6">
+                    <button
+                        className="px-4 py-2 border border-outline-variant text-on-surface-variant font-label text-[10px] uppercase tracking-widest hover:border-primary hover:text-primary transition-all"
+                        onClick={() => navigate('/game')}
+                    >
+                        Отступить
+                    </button>
                 </div>
-
-                <div className="battle-combatant battle-combatant--enemy">
-                    <div className="battle-combatant-name">{enemy.name}</div>
-                    <div className="battle-combatant-hp-text">{enemy.hp} / {enemy.maxHp}</div>
-                    <div className="hp-bar-wrapper">
-                        <motion.div
-                            className={`hp-bar-fill hp-bar-fill--enemy${enemyLow ? ' hp-bar-fill--low' : ''}`}
-                            animate={{ width: `${Math.max(0, enemyHpPercent)}%` }}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+            </header>
+        </>
     );
 };
 

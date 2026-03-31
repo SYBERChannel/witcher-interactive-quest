@@ -8,11 +8,11 @@ const getBattle = async (req, res, next) => {
     try {
         const gameSave = await GameSave.findByUserId(req.user.userId);
         if (!gameSave) {
-            throw new AppError("No active game found", 404);
+            throw new AppError("Активная игра не найдена", 404);
         }
 
         const battleId = req.params.id;
-        const battleInit = BattleEngine.getBattleInit(battleId);
+        const battleInit = BattleEngine.getBattleInit(battleId, gameSave);
 
         const battleKey = `${gameSave.id}_${battleId}`;
         activeBattles.set(battleKey, {
@@ -28,6 +28,7 @@ const getBattle = async (req, res, next) => {
                     ...battleInit,
                     playerHp: gameSave.hp,
                     playerMaxHp: gameSave.max_hp,
+                    playerLevel: gameSave.level,
                 },
             },
         });
@@ -40,7 +41,7 @@ const sendAction = async (req, res, next) => {
     try {
         const gameSave = await GameSave.findByUserId(req.user.userId);
         if (!gameSave) {
-            throw new AppError("No active game found", 404);
+            throw new AppError("Активная игра не найдена", 404);
         }
 
         const battleId = req.params.id;
@@ -48,7 +49,7 @@ const sendAction = async (req, res, next) => {
 
         let battleState = activeBattles.get(battleKey);
         if (!battleState) {
-            const battleInit = BattleEngine.getBattleInit(battleId);
+            const battleInit = BattleEngine.getBattleInit(battleId, gameSave);
             battleState = {
                 playerHp: gameSave.hp,
                 enemyHp: battleInit.enemyHp,

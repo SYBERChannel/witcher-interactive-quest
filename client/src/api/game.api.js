@@ -30,6 +30,21 @@ export const useItem = async (itemId) => {
     return response.data;
 };
 
+export const equipItem = async (itemId) => {
+    const response = await api.post('/game/equip', { item_id: itemId });
+    return response.data;
+};
+
+export const getShop = async () => {
+    const response = await api.get('/game/shop');
+    return response.data;
+};
+
+export const buyShopItem = async (itemId) => {
+    const response = await api.post('/game/shop/buy', { item_id: itemId });
+    return response.data;
+};
+
 export const respondToEvent = async (responseData) => {
     const response = await api.post('/game/random-event', responseData);
     return response.data;

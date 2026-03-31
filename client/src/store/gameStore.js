@@ -128,7 +128,21 @@ const useGameStore = create((set, get) => ({
         } catch (err) {
             console.error(err);
         }
-    }
+    },
+
+    equipItem: async (itemId) => {
+        try {
+            const result = await gameApi.equipItem(itemId);
+            if (result.data && result.data.inventory) {
+                set({ inventory: result.data.inventory });
+            } else {
+                const inventoryPayload = await gameApi.getInventory();
+                set({ inventory: inventoryPayload.data.inventory });
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    },
 }));
 
 export default useGameStore;

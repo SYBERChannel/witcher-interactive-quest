@@ -2,6 +2,7 @@ const GameSave = require("../models/GameSave");
 const SceneEngine = require("../services/SceneEngine");
 const RandomEventEngine = require("../services/RandomEventEngine");
 const InventoryService = require("../services/InventoryService");
+const ShopService = require("../services/ShopService");
 const Leaderboard = require("../models/Leaderboard");
 const BattleLog = require("../models/BattleLog");
 const AppError = require("../utils/AppError");
@@ -175,4 +176,59 @@ const useItem = async (req, res, next) => {
     }
 };
 
-module.exports = { newGame, getState, getScene, makeChoice, getInventory, useItem };
+const equipItem = async (req, res, next) => {
+    try {
+        const gameSave = await GameSave.findByUserId(req.user.userId);
+        if (!gameSave) {
+            throw new AppError("No active game found", 404);
+        }
+
+        const result = await InventoryService.useItem(gameSave, req.body.item_id);
+        const updatedInventory = await InventoryService.getInventory(gameSave.id);
+
+        res.status(200).json({
+            status: "success",
+            data: { result, inventory: updatedInventory },
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const getShop = async (req, res, next) => {
+    try {
+        const gameSave = await GameSave.findByUserId(req.user.userId);
+        if (!gameSave) {
+            throw new AppError("No active game found", 404);
+        }
+
+        const items = ShopService.getShopItems();
+
+        res.status(200).json({
+            status: "success",
+            data: { items, gold: gameSave.gold },
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const buyItem = async (req, res, next) => {
+    try {
+        const gameSave = await GameSave.findByUserId(req.user.userId);
+        if (!gameSave) {
+            throw new AppError("No active game found", 404);
+        }
+
+        const result = await ShopService.buyItem(gameSave, req.body.item_id);
+
+        res.status(200).json({
+            status: "success",
+            data: result,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = { newGame, getState, getScene, makeChoice, getInventory, useItem, equipItem, getShop, buyItem };

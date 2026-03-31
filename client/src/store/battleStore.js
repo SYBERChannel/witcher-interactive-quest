@@ -6,9 +6,10 @@ const useBattleStore = create((set, get) => ({
     loading: false,
     error: null,
     roundResult: null,
+    actionError: null,
 
     initBattle: async (battleId) => {
-        set({ loading: true, error: null, battleData: null, roundResult: null });
+        set({ loading: true, error: null, battleData: null, roundResult: null, actionError: null });
         try {
             const response = await battleApi.getBattle(battleId);
             const battle = response.data.battle;
@@ -19,6 +20,7 @@ const useBattleStore = create((set, get) => ({
                     player: {
                         hp: battle.playerHp,
                         maxHp: battle.playerMaxHp,
+                        level: battle.playerLevel || 1,
                     },
                     enemy: {
                         name: battle.enemyName,
@@ -30,16 +32,17 @@ const useBattleStore = create((set, get) => ({
                     outcome: null,
                     loot: [],
                     xpGained: 0,
+                    xpTotal: 0,
                 },
                 loading: false,
             });
         } catch (err) {
-            set({ error: err.message || 'Failed to load battle', loading: false });
+            set({ error: err.message || 'Не удалось загрузить бой', loading: false });
         }
     },
 
     performAction: async (battleId, action) => {
-        set({ loading: true, error: null });
+        set({ loading: true, actionError: null });
         try {
             const response = await battleApi.sendAction(battleId, action);
             const data = response.data;
@@ -47,13 +50,14 @@ const useBattleStore = create((set, get) => ({
 
             const logParts = [];
             if (data.round) {
-                const pAct = data.round.playerAction;
-                const eAct = data.round.enemyAction;
+                const actionNames = { attack: 'атакой', parry: 'парированием', sign: 'знаком', potion: 'зельем' };
+                const pAct = actionNames[data.round.playerAction] || data.round.playerAction;
+                const eAct = actionNames[data.round.enemyAction] || data.round.enemyAction;
                 const pDmg = Math.abs(data.round.enemyHpChange || 0);
                 const eDmg = Math.abs(data.round.playerHpChange || 0);
-                if (pDmg > 0) logParts.push(`Geralt deals ${pDmg} damage with ${pAct}.`);
-                if (eDmg > 0) logParts.push(`${prev.enemy.name} deals ${eDmg} damage with ${eAct}.`);
-                if (pDmg === 0 && eDmg === 0) logParts.push('Both combatants brace. No damage dealt.');
+                if (pDmg > 0) logParts.push(`Геральт наносит ${pDmg} урона ${pAct}.`);
+                if (eDmg > 0) logParts.push(`${prev.enemy.name} наносит ${eDmg} урона ${eAct}.`);
+                if (pDmg === 0 && eDmg === 0) logParts.push('Оба бойца выжидают. Урон не нанесён.');
             }
 
             set({
@@ -84,12 +88,19 @@ const useBattleStore = create((set, get) => ({
 
             return data.battleResult || null;
         } catch (err) {
-            set({ error: err.message || 'Action failed', loading: false });
+            const errorMsg = err.response?.data?.message || err.message || 'Действие не выполнено';
+            if (errorMsg.toLowerCase().includes('зелий') || errorMsg.toLowerCase().includes('potion')) {
+                set({ actionError: 'Нет доступных зелий!', loading: false });
+            } else {
+                set({ error: errorMsg, loading: false });
+            }
             return null;
         }
     },
 
-    resetBattle: () => set({ battleData: null, roundResult: null, error: null })
+    clearActionError: () => set({ actionError: null }),
+
+    resetBattle: () => set({ battleData: null, roundResult: null, error: null, actionError: null })
 }));
 
 export default useBattleStore;

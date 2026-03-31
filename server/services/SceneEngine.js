@@ -3,6 +3,7 @@ const path = require("path");
 const GameSave = require("../models/GameSave");
 const Inventory = require("../models/Inventory");
 const AppError = require("../utils/AppError");
+const { calculateLevel, calculateMaxHp, XP_PER_LEVEL } = require("./BattleEngine");
 
 const scenesDir = path.join(__dirname, "..", "data", "scenes");
 
@@ -131,13 +132,26 @@ const applyEffects = async (effects, gameSave) => {
     }
 
     const newXp = gameSave.xp + xpChange;
-    const newLevel = Math.floor(newXp / 100) + 1;
-    const newHp = Math.max(0, Math.min(gameSave.max_hp, gameSave.hp + hpChange));
+    const newLevel = calculateLevel(newXp);
+    const newMaxHp = calculateMaxHp(newLevel);
+    const newHp = Math.max(0, Math.min(newMaxHp, gameSave.hp + hpChange));
     const newGold = Math.max(0, gameSave.gold + goldChange);
 
     await GameSave.updateFlags(gameSave.id, updatedFlags);
     if (xpChange !== 0) {
         await GameSave.updateXp(gameSave.id, newXp, newLevel);
+        if (newMaxHp !== gameSave.max_hp) {
+            await GameSave.updateHp(gameSave.id, Math.min(newHp + (newMaxHp - gameSave.max_hp), newMaxHp));
+            await GameSave.update(gameSave.id, {
+                ...gameSave,
+                flags: updatedFlags,
+                hp: Math.min(newHp + (newMaxHp - gameSave.max_hp), newMaxHp),
+                max_hp: newMaxHp,
+                xp: newXp,
+                level: newLevel,
+                gold: newGold,
+            });
+        }
     }
     if (hpChange !== 0) {
         await GameSave.updateHp(gameSave.id, newHp);

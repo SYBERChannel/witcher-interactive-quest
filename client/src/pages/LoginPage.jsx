@@ -21,16 +21,16 @@ const LoginPage = () => {
         <div className="auth-page">
             <div className="auth-container">
                 <div className="auth-header">
-                    <div className="auth-emblem">The Continent Awaits</div>
-                    <h1 className="auth-title">Sign In</h1>
-                    <p className="auth-subtitle">Return to your path, Witcher</p>
+                    <div className="auth-emblem">Континент ждёт</div>
+                    <h1 className="auth-title">Вход</h1>
+                    <p className="auth-subtitle">Вернись на свой путь, ведьмак</p>
                 </div>
 
                 {error && <div className="stitch-error">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     <div className="stitch-input-group">
-                        <label htmlFor="login-email">Email</label>
+                        <label htmlFor="login-email">Эл. почта</label>
                         <input
                             id="login-email"
                             className="stitch-input"
@@ -42,7 +42,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <div className="stitch-input-group">
-                        <label htmlFor="login-password">Password</label>
+                        <label htmlFor="login-password">Пароль</label>
                         <input
                             id="login-password"
                             className="stitch-input"
@@ -58,15 +58,15 @@ const LoginPage = () => {
                         className="btn-primary auth-submit"
                         disabled={loading}
                     >
-                        {loading ? 'Entering...' : 'Enter the Path'}
+                        {loading ? 'Вход...' : 'Войти'}
                     </button>
                 </form>
 
                 <div className="auth-footer">
                     <span className="auth-footer-text">
-                        No chronicle yet?{' '}
+                        Ещё нет аккаунта?{' '}
                         <Link to="/register" className="auth-footer-link">
-                            Begin your tale
+                            Начать путь
                         </Link>
                     </span>
                 </div>

@@ -22,28 +22,28 @@ const RegisterPage = () => {
         <div className="auth-page">
             <div className="auth-container">
                 <div className="auth-header">
-                    <div className="auth-emblem">Forge Your Legend</div>
-                    <h1 className="auth-title">Create Chronicle</h1>
-                    <p className="auth-subtitle">Every witcher must begin somewhere</p>
+                    <div className="auth-emblem">Создай свою легенду</div>
+                    <h1 className="auth-title">Регистрация</h1>
+                    <p className="auth-subtitle">Каждый ведьмак должен с чего-то начать</p>
                 </div>
 
                 {error && <div className="stitch-error">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="auth-form">
                     <div className="stitch-input-group">
-                        <label htmlFor="reg-username">Witcher Name</label>
+                        <label htmlFor="reg-username">Имя ведьмака</label>
                         <input
                             id="reg-username"
                             className="stitch-input"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Geralt of Rivia"
+                            placeholder="Геральт из Ривии"
                             required
                         />
                     </div>
                     <div className="stitch-input-group">
-                        <label htmlFor="reg-email">Email</label>
+                        <label htmlFor="reg-email">Эл. почта</label>
                         <input
                             id="reg-email"
                             className="stitch-input"
@@ -55,7 +55,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <div className="stitch-input-group">
-                        <label htmlFor="reg-password">Password</label>
+                        <label htmlFor="reg-password">Пароль</label>
                         <input
                             id="reg-password"
                             className="stitch-input"
@@ -71,15 +71,15 @@ const RegisterPage = () => {
                         className="btn-primary auth-submit"
                         disabled={loading}
                     >
-                        {loading ? 'Forging...' : 'Begin the Journey'}
+                        {loading ? 'Создание...' : 'Начать путешествие'}
                     </button>
                 </form>
 
                 <div className="auth-footer">
                     <span className="auth-footer-text">
-                        Already chronicled?{' '}
+                        Уже есть аккаунт?{' '}
                         <Link to="/login" className="auth-footer-link">
-                            Return to sign in
+                            Войти
                         </Link>
                     </span>
                 </div>

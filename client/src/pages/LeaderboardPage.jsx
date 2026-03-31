@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import { getLeaderboard } from '../api/leaderboard.api';
 import useAuthStore from '../store/authStore';
 
+const BRANCH_LABELS = {
+    good: 'Свет',
+    bad: 'Тьма',
+    neutral: 'Нейтралитет',
+};
+
 const LeaderboardPage = () => {
     const [leaders, setLeaders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,17 +22,14 @@ const LeaderboardPage = () => {
             try {
                 const data = await getLeaderboard();
                 if (isMounted) {
-                    setLeaders(Array.isArray(data) ? data : []);
+                    const entries = data?.data?.leaderboard || data?.leaderboard || (Array.isArray(data) ? data : []);
+                    setLeaders(entries);
                 }
             } catch (err) {
                 if (isMounted) {
                     console.error(err);
-                    setError('Failed to load leaderboard');
-                    setLeaders([
-                        { id: 1, username: 'Geralt_Rivia', xp: 5000, level: 10, branch: 'good' },
-                        { id: 2, username: 'Vesemir_Old', xp: 4500, level: 9, branch: 'neutral' },
-                        { id: 3, username: 'Yennefer_V', xp: 4200, level: 9, branch: 'bad' },
-                    ]);
+                    setError('Не удалось загрузить таблицу лидеров');
+                    setLeaders([]);
                 }
             } finally {
                 if (isMounted) {
@@ -48,32 +51,34 @@ const LeaderboardPage = () => {
     return (
         <div className="leaderboard-page">
             <div className="leaderboard-header">
-                <Link to="/" className="leaderboard-back">Back to Menu</Link>
-                <h1 className="leaderboard-title">Leaderboard</h1>
-                <p className="leaderboard-subtitle">The finest witchers across the Continent</p>
+                <Link to="/" className="leaderboard-back">Назад в Меню</Link>
+                <h1 className="leaderboard-title">Таблица Лидеров</h1>
+                <p className="leaderboard-subtitle">Лучшие ведьмаки Континента</p>
             </div>
 
             {error && (
                 <div className="leaderboard-warning">
-                    {error} — Showing fallback data
+                    {error}
                 </div>
             )}
 
             {loading ? (
-                <div className="leaderboard-loading">Loading chronicles...</div>
+                <div className="leaderboard-loading">Загрузка хроник...</div>
             ) : leaders.length === 0 ? (
-                <div className="leaderboard-empty">No records found</div>
+                <div className="leaderboard-empty">Записей пока нет. Пройди игру, чтобы стать первым!</div>
             ) : (
                 <div className="leaderboard-content">
                     <div className="leaderboard-table-wrapper">
                         <table className="leaderboard-table">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
-                                    <th>Witcher</th>
-                                    <th>Level</th>
-                                    <th>XP</th>
-                                    <th>Path</th>
+                                    <th>Ранг</th>
+                                    <th>Ведьмак</th>
+                                    <th>Уровень</th>
+                                    <th>Опыт</th>
+                                    <th>Сцен</th>
+                                    <th>Побед</th>
+                                    <th>Путь</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -92,10 +97,12 @@ const LeaderboardPage = () => {
                                                 <span className="leaderboard-username">{leader.username}</span>
                                             </td>
                                             <td>{leader.level}</td>
-                                            <td>{leader.xp}</td>
+                                            <td>{leader.total_xp || leader.xp}</td>
+                                            <td>{leader.scenes_visited ?? '—'}</td>
+                                            <td>{leader.battles_won ?? '—'}</td>
                                             <td>
                                                 <span className={getBranchClass(leader.branch)}>
-                                                    {leader.branch}
+                                                    {BRANCH_LABELS[leader.branch] || leader.branch}
                                                 </span>
                                             </td>
                                         </tr>

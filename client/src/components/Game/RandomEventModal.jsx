@@ -1,6 +1,13 @@
 import React from 'react';
 import useGameState from '../../hooks/useGameState';
 
+const EVENT_TYPE_LABELS = {
+    combat: 'Засада',
+    loot: 'Находка',
+    encounter: 'Встреча',
+    trap: 'Ловушка',
+};
+
 const RandomEventModal = () => {
     const { activeEvent, handleEvent } = useGameState();
 
@@ -9,7 +16,7 @@ const RandomEventModal = () => {
     return (
         <div className="stitch-modal-backdrop">
             <div className="stitch-modal">
-                <div className="event-modal-type">{activeEvent.type || 'Event'}</div>
+                <div className="event-modal-type">{EVENT_TYPE_LABELS[activeEvent.type] || 'Событие'}</div>
                 <h3 className="event-modal-title">{activeEvent.title}</h3>
                 <p className="event-modal-text">{activeEvent.text}</p>
 
@@ -19,7 +26,7 @@ const RandomEventModal = () => {
                         onClick={() => handleEvent()}
                         style={{ width: '100%' }}
                     >
-                        Continue
+                        Продолжить
                     </button>
                 </div>
             </div>

@@ -30,7 +30,7 @@ const getEnemy = (battleId) => {
     return { ...enemy };
 };
 
-const getBattleInit = (battleId) => {
+const getBattleInit = (battleId, gameSave) => {
     const enemy = getEnemy(battleId);
     return {
         battleId: enemy.id,
@@ -38,7 +38,24 @@ const getBattleInit = (battleId) => {
         enemyHp: enemy.hp,
         enemyAttack: enemy.attack,
         enemyDefense: enemy.defense,
+        playerHp: gameSave ? gameSave.hp : 100,
+        playerMaxHp: gameSave ? gameSave.max_hp : 100,
+        playerLevel: gameSave ? gameSave.level : 1,
     };
+};
+
+const XP_PER_LEVEL = 50;
+
+const calculateLevel = (totalXp) => {
+    return Math.floor(totalXp / XP_PER_LEVEL) + 1;
+};
+
+const calculateMaxHp = (level) => {
+    return 100 + (level - 1) * 15;
+};
+
+const getLevelDamageBonus = (level) => {
+    return (level - 1) * 2;
 };
 
 const chooseEnemyAction = (enemy) => {
@@ -58,8 +75,9 @@ const chooseEnemyAction = (enemy) => {
     return "potion";
 };
 
-const calculateRound = (playerAction, enemyAction, playerWeapon, playerArmor, enemy) => {
-    const playerDamage = playerWeapon ? playerWeapon.stats.damage || 10 : 10;
+const calculateRound = (playerAction, enemyAction, playerWeapon, playerArmor, enemy, levelBonus) => {
+    const baseDamage = playerWeapon ? playerWeapon.stats.damage || 10 : 10;
+    const playerDamage = baseDamage + (levelBonus || 0);
     const playerDefense = playerArmor ? playerArmor.stats.defense || 0 : 0;
     let playerHpChange = 0;
     let enemyHpChange = 0;
@@ -136,18 +154,20 @@ const processAction = async (gameSave, battleId, playerAction, battleState) => {
     const playerWeapon = inventory.find((i) => i.item_type === "weapon" && i.equipped);
     const playerArmor = inventory.find((i) => i.item_type === "armor" && i.equipped);
 
+    const levelBonus = getLevelDamageBonus(gameSave.level);
+
     let potionHeal = 0;
     if (playerAction === "potion") {
         const potion = inventory.find((i) => i.item_type === "potion" && i.quantity > 0);
         if (!potion) {
-            throw new AppError("No potions available", 400);
+            throw new AppError("Нет доступных зелий", 400);
         }
         potionHeal = potion.stats.heal || 0;
         await Inventory.removeItem(gameSave.id, potion.item_id);
     }
 
     const enemyAction = chooseEnemyAction(enemy);
-    const round = calculateRound(playerAction, enemyAction, playerWeapon, playerArmor, enemy);
+    const round = calculateRound(playerAction, enemyAction, playerWeapon, playerArmor, enemy, levelBonus);
 
     let currentPlayerHp = battleState.playerHp + round.playerHpChange + potionHeal;
     currentPlayerHp = Math.max(0, Math.min(gameSave.max_hp, currentPlayerHp));
@@ -166,8 +186,22 @@ const processAction = async (gameSave, battleId, playerAction, battleState) => {
         xpGained = enemy.xp_reward;
         loot = resolveLoot(enemy);
 
-        await GameSave.updateHp(gameSave.id, currentPlayerHp);
-        await GameSave.updateXp(gameSave.id, gameSave.xp + xpGained, Math.floor((gameSave.xp + xpGained) / 100) + 1);
+        const newTotalXp = gameSave.xp + xpGained;
+        const newLevel = calculateLevel(newTotalXp);
+        const newMaxHp = calculateMaxHp(newLevel);
+        const hpToSave = Math.min(currentPlayerHp + (newMaxHp - gameSave.max_hp), newMaxHp);
+
+        await GameSave.updateHp(gameSave.id, hpToSave);
+        await GameSave.updateXp(gameSave.id, newTotalXp, newLevel);
+        if (newMaxHp !== gameSave.max_hp) {
+            await GameSave.update(gameSave.id, {
+                ...gameSave,
+                hp: hpToSave,
+                max_hp: newMaxHp,
+                xp: newTotalXp,
+                level: newLevel,
+            });
+        }
         await GameSave.incrementBattleCount(gameSave.id);
 
         for (const item of loot) {
@@ -216,4 +250,7 @@ module.exports = {
     getEnemy,
     getBattleInit,
     processAction,
+    calculateLevel,
+    calculateMaxHp,
+    XP_PER_LEVEL,
 };

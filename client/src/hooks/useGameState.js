@@ -1,5 +1,4 @@
 import useGameStore from '../store/gameStore';
-import { useEffect } from 'react';
 
 const useGameState = () => {
     const gameState = useGameStore((state) => state.gameState);
@@ -13,6 +12,7 @@ const useGameState = () => {
     const submitChoice = useGameStore((state) => state.submitChoice);
     const handleEvent = useGameStore((state) => state.handleEvent);
     const useItem = useGameStore((state) => state.useItem);
+    const equipItem = useGameStore((state) => state.equipItem);
 
     const startNewGame = useGameStore((state) => state.startNewGame);
     const resumeGame = useGameStore((state) => state.resumeGame);
@@ -28,6 +28,7 @@ const useGameState = () => {
         submitChoice,
         handleEvent,
         useItem,
+        equipItem,
         startNewGame,
         resumeGame
     };

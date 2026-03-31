@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage';
 import MainMenuPage from './pages/MainMenuPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import GamePage from './pages/GamePage';
+import ShopPage from './pages/ShopPage';
 import ProtectedRoute from './components/UI/ProtectedRoute';
 import './App.css';
 
@@ -35,6 +36,15 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <GamePage />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        <Route
+                            path="/shop"
+                            element={
+                                <ProtectedRoute>
+                                    <ShopPage />
                                 </ProtectedRoute>
                             }
                         />

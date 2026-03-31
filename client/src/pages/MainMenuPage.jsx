@@ -20,7 +20,7 @@ const MainMenuPage = () => {
             navigate('/game');
         } catch (err) {
             console.error(err);
-            setError('Failed to start new game');
+            setError('Не удалось начать новую игру');
         } finally {
             setLoading(false);
         }
@@ -35,9 +35,9 @@ const MainMenuPage = () => {
         } catch (err) {
             console.error(err);
             if (err.response && err.response.status === 404) {
-                setError('No active game found');
+                setError('Активная игра не найдена');
             } else {
-                setError('Failed to load game');
+                setError('Не удалось загрузить игру');
             }
         } finally {
             setLoading(false);
@@ -55,16 +55,16 @@ const MainMenuPage = () => {
                         className="btn-text menu-logout-btn"
                         onClick={logout}
                     >
-                        Sign Out
+                        Выйти
                     </button>
                 </div>
             </div>
 
             <div className="menu-center">
                 <div className="menu-brand">
-                    <div className="menu-brand-label">A Dark Fantasy Quest</div>
-                    <h1 className="menu-brand-title">Witcher</h1>
-                    <p className="menu-brand-subtitle">Path of Geralt</p>
+                    <div className="menu-brand-label">Тёмное Фэнтези Приключение</div>
+                    <h1 className="menu-brand-title">Ведьмак</h1>
+                    <p className="menu-brand-subtitle">Путь Геральта</p>
                 </div>
 
                 {error && (
@@ -77,7 +77,7 @@ const MainMenuPage = () => {
                         onClick={handleNewGame}
                         disabled={loading}
                     >
-                        {loading ? 'Loading...' : 'New Game'}
+                        {loading ? 'Загрузка...' : 'Новая Игра'}
                     </button>
 
                     <button
@@ -85,7 +85,7 @@ const MainMenuPage = () => {
                         onClick={handleContinue}
                         disabled={loading}
                     >
-                        {loading ? 'Resuming...' : 'Continue'}
+                        {loading ? 'Загрузка...' : 'Продолжить'}
                     </button>
 
                     <hr className="stitch-divider menu-separator" />
@@ -96,7 +96,7 @@ const MainMenuPage = () => {
                             style={{ width: '100%' }}
                             disabled={loading}
                         >
-                            Leaderboard
+                            Таблица Лидеров
                         </button>
                     </Link>
                 </div>
