@@ -30,7 +30,7 @@ const GamePage = () => {
 
     if (loading && !gameState) {
         return (
-            <div className="min-h-screen bg-background flex items-center justify-center font-headline text-primary italic">
+            <div className="min-h-[100dvh] bg-background flex items-center justify-center font-headline text-primary italic">
                 Собираемся в путь...
             </div>
         );
@@ -38,7 +38,7 @@ const GamePage = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+            <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center gap-4">
                 <span className="font-headline text-secondary text-2xl">Путь заблокирован</span>
                 <span className="text-on-surface-variant italic">{error}</span>
                 <button className="px-6 py-2 border border-primary text-primary hover:bg-primary hover:text-on-primary transition-all" onClick={fetchState}>Повторить</button>
@@ -47,7 +47,7 @@ const GamePage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-background text-on-surface selection:bg-primary/30 selection:text-primary overflow-x-hidden">
+        <div className="min-h-[100dvh] bg-background text-on-surface selection:bg-primary/30 selection:text-primary overflow-x-hidden">
             <GameHUD onToggleInventory={() => setIsInventoryOpen(prev => !prev)} />
 
             <main className="pb-24 grid grid-cols-1 xl:grid-cols-12 gap-0 relative">

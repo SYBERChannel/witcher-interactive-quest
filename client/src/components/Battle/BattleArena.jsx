@@ -52,7 +52,7 @@ const BattleArena = () => {
     };
 
     return (
-        <main className="relative h-screen w-full flex flex-col overflow-hidden bg-surface-container-lowest">
+        <main className="relative h-[100dvh] w-full flex flex-col overflow-hidden bg-surface-container-lowest">
             <div className="absolute inset-0 opacity-40 bg-cover bg-center grayscale mix-blend-overlay"
                 style={{ backgroundImage: "url('/backgrounds/battle_arena.png')" }}
             />
@@ -69,7 +69,7 @@ const BattleArena = () => {
                 </div>
             </div>
 
-            <div className="absolute inset-0 z-10 w-full h-full flex items-end justify-between px-4 sm:px-24 pb-[230px] sm:pb-[140px] pointer-events-none">
+            <div className="absolute inset-0 z-10 w-full h-full flex items-end justify-between px-4 sm:px-24 pb-[270px] sm:pb-[140px] pointer-events-none">
                 <motion.div
                     className="relative w-[45%] sm:w-1/3 max-h-[50%] sm:max-h-[65%] flex items-end justify-start sm:justify-center"
                     animate={getPlayerAnimation()}
@@ -112,7 +112,7 @@ const BattleArena = () => {
                 )}
             </AnimatePresence>
 
-            <div className="absolute inset-x-0 bottom-20 sm:bottom-36 px-4 sm:px-12 flex justify-between items-end z-20 pointer-events-none">
+            <div className="absolute inset-x-0 bottom-28 sm:bottom-36 px-4 sm:px-12 flex justify-between items-end z-20 pointer-events-none">
                 <div className="flex flex-col gap-2 w-40 sm:w-72 pointer-events-auto">
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-end">
@@ -146,7 +146,7 @@ const BattleArena = () => {
             </div>
 
             {roundResult?.logMessage && (
-                <div className="sm:hidden absolute inset-x-0 bottom-20 px-4 z-20 pointer-events-none flex justify-end">
+                <div className="sm:hidden absolute inset-x-0 bottom-28 px-4 z-20 pointer-events-none flex justify-end">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={roundResult.logMessage}
@@ -163,7 +163,7 @@ const BattleArena = () => {
                 </div>
             )}
 
-            <div className="mt-auto relative z-30 bg-surface-container-lowest border-t border-outline-variant/20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+            <div className="mt-auto relative z-30 bg-surface-container-lowest border-t border-outline-variant/20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] pb-4 sm:pb-0">
                 {isOver ? (
                     <div className="h-20 flex flex-col items-center justify-center">
                         <h2 className={`font-headline text-2xl uppercase tracking-widest ${battleData.outcome === 'won' ? 'text-primary' : 'text-secondary'}`}>
